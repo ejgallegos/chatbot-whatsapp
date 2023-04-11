@@ -1,0 +1,223 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '9C2493B4FB5A808ED654426D78350639',
+    participant: undefined
+  },
+  messageTimestamp: 1681222829,
+  pushName: 'eric',
+  message: Message {
+    conversation: 'Bot',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Bot',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493492565861@s.whatsapp.net',
+    fromMe: false,
+    id: '56DAAE20D74C9B0F9EA4E0BF2A9AFAA6',
+    participant: undefined
+  },
+  messageTimestamp: 1681223016,
+  pushName: 'JACHI TOUR',
+  message: Message {
+    audioMessage: AudioMessage {
+      url: 'https://mmg.whatsapp.net/v/t62.7117-24/40699501_524198166582868_295128511676927177_n.enc?ccb=11-4&oh=01_AdRlFCzd6TrVaxpZcyhLdG7ITAo_crpAijZ8QXigBoDBmA&oe=645CD33F&mms3=true',
+      mimetype: 'audio/ogg; codecs=opus',
+      fileSha256: [Uint8Array],
+      fileLength: [Long],
+      seconds: 17,
+      ptt: true,
+      mediaKey: [Uint8Array],
+      fileEncSha256: [Uint8Array],
+      directPath: '/v/t62.7117-24/40699501_524198166582868_295128511676927177_n.enc?ccb=11-4&oh=01_AdRlFCzd6TrVaxpZcyhLdG7ITAo_crpAijZ8QXigBoDBmA&oe=645CD33F',
+      mediaKeyTimestamp: [Long],
+      waveform: [Uint8Array]
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '_event_voice_note__02853a6a-3604-44a7-ac3f-40dd3d49b9db',
+  from: '5493492565861'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493492565861@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0B6B2787A0A4358F154',
+    participant: undefined
+  },
+  messageTimestamp: 1681224369,
+  pushName: 'JACHI TOUR',
+  message: Message {
+    conversation: 'Fecha de in 29-05-2023\nFecha de out 01-06-2023\n3 noches.\n4 adultos.',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Fecha de in 29-05-2023\nFecha de out 01-06-2023\n3 noches.\n4 adultos.',
+  from: '5493492565861'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493492565861@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0AA42799C7FF89CD8FB',
+    participant: undefined
+  },
+  messageTimestamp: 1681224400,
+  pushName: 'JACHI TOUR',
+  message: Message {
+    conversation: 'PROCETTO, MARIO ROQUE\n' +
+      'DNI 16719747\n' +
+      'F NAC 13/09/1964\n' +
+      '\n' +
+      'GARBAGNOLI, NANCI GUADALUPE\n' +
+      'DNI 17597635\n' +
+      'F NAC 23/03/1966\n' +
+      '\n' +
+      'MOIETTA, HECTOR OSCAR\n' +
+      'DNI 13576556\n' +
+      'F NAC 10/08/1959\n' +
+      'SCUDALETTI, MIRTA ESTER\n' +
+      'DNI 16719749\n' +
+      'F NAC 5/01/1965',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'PROCETTO, MARIO ROQUE\n' +
+    'DNI 16719747\n' +
+    'F NAC 13/09/1964\n' +
+    '\n' +
+    'GARBAGNOLI, NANCI GUADALUPE\n' +
+    'DNI 17597635\n' +
+    'F NAC 23/03/1966\n' +
+    '\n' +
+    'MOIETTA, HECTOR OSCAR\n' +
+    'DNI 13576556\n' +
+    'F NAC 10/08/1959\n' +
+    'SCUDALETTI, MIRTA ESTER\n' +
+    'DNI 16719749\n' +
+    'F NAC 5/01/1965',
+  from: '5493492565861'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493492565861@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB04BE664413897BEFD61',
+    participant: undefined
+  },
+  messageTimestamp: 1681224421,
+  pushName: 'JACHI TOUR',
+  message: Message {
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    },
+    buttonsResponseMessage: ButtonsResponseMessage {
+      selectedButtonId: 'id-btn-1',
+      selectedDisplayText: 'No',
+      contextInfo: [ContextInfo],
+      type: 1
+    }
+  },
+  body: 'No',
+  from: '5493492565861'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493492565861@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0771FA376C2315B35E9',
+    participant: undefined
+  },
+  messageTimestamp: 1681224431,
+  pushName: 'JACHI TOUR',
+  message: Message {
+    conversation: 'Fecha de in 29-05-2023\nFecha de out 01-06-2023',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Fecha de in 29-05-2023\nFecha de out 01-06-2023',
+  from: '5493492565861'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493492565861@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB044C8FF3C28A592FA50',
+    participant: undefined
+  },
+  messageTimestamp: 1681224445,
+  pushName: 'JACHI TOUR',
+  message: Message {
+    conversation: 'PROCETTO, MARIO ROQUE\n' +
+      'DNI 16719747\n' +
+      'F NAC 13/09/1964\n' +
+      '\n' +
+      'GARBAGNOLI, NANCI GUADALUPE\n' +
+      'DNI 17597635\n' +
+      'F NAC 23/03/1966\n' +
+      '\n' +
+      'MOIETTA, HECTOR OSCAR\n' +
+      'DNI 13576556\n' +
+      'F NAC 10/08/1959\n' +
+      '\n' +
+      'SCUDALETTI, MIRTA ESTER\n' +
+      'DNI 16719749\n' +
+      'F NAC 5/01/1965',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'PROCETTO, MARIO ROQUE\n' +
+    'DNI 16719747\n' +
+    'F NAC 13/09/1964\n' +
+    '\n' +
+    'GARBAGNOLI, NANCI GUADALUPE\n' +
+    'DNI 17597635\n' +
+    'F NAC 23/03/1966\n' +
+    '\n' +
+    'MOIETTA, HECTOR OSCAR\n' +
+    'DNI 13576556\n' +
+    'F NAC 10/08/1959\n' +
+    '\n' +
+    'SCUDALETTI, MIRTA ESTER\n' +
+    'DNI 16719749\n' +
+    'F NAC 5/01/1965',
+  from: '5493492565861'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493492565861@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0DE76C5956A70DB5F63',
+    participant: undefined
+  },
+  messageTimestamp: 1681224777,
+  pushName: 'JACHI TOUR',
+  message: Message {
+    conversation: 'Ok dale. Gracias!!',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Ok dale. Gracias!!',
+  from: '5493492565861'
+}
