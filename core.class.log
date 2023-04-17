@@ -1,0 +1,176 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0E96A2BC06469F0F61A',
+    participant: undefined
+  },
+  messageTimestamp: 1681570864,
+  pushName: 'eric',
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'bot',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'bot',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB04282C1890CB5E74616',
+    participant: undefined
+  },
+  messageTimestamp: 1681570867,
+  pushName: 'eric',
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'a',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'a',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB07D01672DFA5B4ED4C4',
+    participant: undefined
+  },
+  messageTimestamp: 1681570872,
+  pushName: 'eric',
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'b',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'b',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0424AE4A91A0F0AE509',
+    participant: undefined
+  },
+  messageTimestamp: 1681570889,
+  pushName: 'eric',
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'b',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'b',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB032120AF91B1214A519',
+    participant: undefined
+  },
+  messageTimestamp: 1681570914,
+  pushName: 'eric',
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '15-04-2023',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '15-04-2023',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB03C05484C1A431A93F6',
+    participant: undefined
+  },
+  messageTimestamp: 1681570936,
+  pushName: 'eric',
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'eric',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'eric',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804646761@s.whatsapp.net',
+    fromMe: false,
+    id: '7DEA20D5883F07BC8E39C7F1E371B89B',
+    participant: undefined
+  },
+  messageTimestamp: 1681572394,
+  pushName: 'Diego',
+  message: Message {
+    conversation: 'Bot',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Bot',
+  from: '5493804646761'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804646761@s.whatsapp.net',
+    fromMe: false,
+    id: '89ACAD2D4E8E7EC3511C2C71484EC141',
+    participant: undefined
+  },
+  messageTimestamp: 1681572401,
+  pushName: 'Diego',
+  message: Message {
+    conversation: 'B',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'B',
+  from: '5493804646761'
+}
