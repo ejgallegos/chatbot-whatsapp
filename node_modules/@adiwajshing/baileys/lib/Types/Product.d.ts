@@ -12,7 +12,7 @@ export declare type CatalogResult = {
 };
 export declare type ProductCreateResult = {
     data: {
-        product: any;
+        product: {};
     };
 };
 export declare type CatalogStatus = {
@@ -67,4 +67,12 @@ export declare type OrderProduct = {
 export declare type OrderDetails = {
     price: OrderPrice;
     products: OrderProduct[];
+};
+export declare type CatalogCursor = string;
+export declare type GetCatalogOptions = {
+    /** cursor to start from */
+    cursor?: CatalogCursor;
+    /** number of products to fetch */
+    limit?: number;
+    jid?: string;
 };

@@ -1,34 +1,64 @@
-const { createBot, createProvider, createFlow, addKeyword, addChild } = require('@bot-whatsapp/bot')
+require("dotenv").config();
+const { createBot, createProvider, createFlow, addKeyword, addChild, EVENTS } = require('@bot-whatsapp/bot');
 
-const QRPortalWeb = require('@bot-whatsapp/portal')
-const BaileysProvider = require('@bot-whatsapp/provider/baileys')
-const MockAdapter = require('@bot-whatsapp/database/mock')
+const QRPortalWeb = require('@bot-whatsapp/portal');
+const BaileysProvider = require('@bot-whatsapp/provider/baileys');
+const MockAdapter = require('@bot-whatsapp/database/mock');
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+const { validationMenu } = require('./validatios/validationMenu');
+
+const { getCliente, registerCliente } = require('./api/servicesClientes');
 
 /**Flows
  * 
  */
 
-// const flowPrincipal = require("./flows/flowPrincipal");
-const flowReservar = require("./flows/flowReservar");
-//const { flowDepartamentos, flowFechaReserva, flowNombreApellido, flowInfoReserva } = require("./flows/flowDepartamentos");
+const { flowReservar, flowAlojamientos, flowFechaInicioReserva, flowFechaFinalReserva } = require("./flows/flowReservar");
+const flowCerrarConversacion = require("./flows/flowCerrarConversacion");
+const flowPrecios = require("./flows/flowPrecios");
 
-const flowPrincipal = addKeyword(['bot'])
-    .addAnswer(['¡Hola soy Delta! y seré tu asistente.', 'Cuentame, ¿En que puedo ayudarte?, te muestro algunas opciones.'])
-    .addAnswer(['*a)* Reservar', '*b)* Precios', '*c)* Más información'])
+
+const flowPrincipal = addKeyword(['hola', 'buenas', 'que tal', 'oli'])
+    .addAnswer(['¡Hola! soy Delta y seré tu asistente.', 'Cuéntame, ¿En que puedo ayudarte?, te muestro algunas opciones.'])
+    .addAnswer(['*1)* Reservar', '*2)* Precios', '*3)* Más información'])
     .addAnswer(['Elige una de la opciones para continuar.'],
         { capture: true },
-        [...addChild(flowReservar)]);
+        async (ctx, { flowDynamic, gotoFlow, fallBack, endFlow }) => {
+            const tel = ctx.from;
+
+            try {
+                const cliente = await getCliente(tel);
+
+                if (cliente.length === 0) {
+                    await registerCliente(tel);
+                };
+
+                const respuestaOpcion = ctx.body.toLowerCase();
+                if (!validationMenu(respuestaOpcion)) {
+                    await delay(500);
+                    await fallBack();
+                    return;
+                };
+
+            } catch (error) {
+                await delay(500);
+                await flowDynamic(error.message);
+                await endFlow('Te pido disculpas, ¿Puedes intentar nuevamente? Gracias.');
+                return;
+            };
+
+        }, [flowReservar]
+    );
 
 const main = async () => {
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow(
         [
             flowPrincipal,
-            flowReservar,
-            // flowDepartamentos,
-            // flowFechaReserva,
-            // flowNombreApellido,
-            // flowInfoReserva
+            flowCerrarConversacion,
+            flowFechaInicioReserva,
+            flowFechaFinalReserva
         ])
     const adapterProvider = createProvider(BaileysProvider)
 

@@ -2,14 +2,15 @@
   key: {
     remoteJid: '5493804509885@s.whatsapp.net',
     fromMe: false,
-    id: '3EB0E96A2BC06469F0F61A',
+    id: '3EB0BC61D38DD0CF8BB82F',
     participant: undefined
   },
-  messageTimestamp: 1681570864,
+  messageTimestamp: 1688169434,
   pushName: 'eric',
+  broadcast: false,
   message: Message {
     extendedTextMessage: ExtendedTextMessage {
-      text: 'bot',
+      text: 'hola',
       contextInfo: [ContextInfo],
       inviteLinkGroupTypeV2: 0
     },
@@ -18,21 +19,22 @@
       deviceListMetadataVersion: 2
     }
   },
-  body: 'bot',
+  body: 'hola',
   from: '5493804509885'
 }
 [handleMsg]:  {
   key: {
     remoteJid: '5493804509885@s.whatsapp.net',
     fromMe: false,
-    id: '3EB04282C1890CB5E74616',
+    id: '3EB0614FD312BBFB8862AA',
     participant: undefined
   },
-  messageTimestamp: 1681570867,
+  messageTimestamp: 1688169436,
   pushName: 'eric',
+  broadcast: false,
   message: Message {
     extendedTextMessage: ExtendedTextMessage {
-      text: 'a',
+      text: '1',
       contextInfo: [ContextInfo],
       inviteLinkGroupTypeV2: 0
     },
@@ -41,21 +43,22 @@
       deviceListMetadataVersion: 2
     }
   },
-  body: 'a',
+  body: '1',
   from: '5493804509885'
 }
 [handleMsg]:  {
   key: {
     remoteJid: '5493804509885@s.whatsapp.net',
     fromMe: false,
-    id: '3EB07D01672DFA5B4ED4C4',
+    id: '3EB01B5BC712E1DFA2B78A',
     participant: undefined
   },
-  messageTimestamp: 1681570872,
+  messageTimestamp: 1688169441,
   pushName: 'eric',
+  broadcast: false,
   message: Message {
     extendedTextMessage: ExtendedTextMessage {
-      text: 'b',
+      text: '5',
       contextInfo: [ContextInfo],
       inviteLinkGroupTypeV2: 0
     },
@@ -64,21 +67,22 @@
       deviceListMetadataVersion: 2
     }
   },
-  body: 'b',
+  body: '5',
   from: '5493804509885'
 }
 [handleMsg]:  {
   key: {
     remoteJid: '5493804509885@s.whatsapp.net',
     fromMe: false,
-    id: '3EB0424AE4A91A0F0AE509',
+    id: '3EB0CCCB0570CFFD3B3960',
     participant: undefined
   },
-  messageTimestamp: 1681570889,
+  messageTimestamp: 1688169449,
   pushName: 'eric',
+  broadcast: false,
   message: Message {
     extendedTextMessage: ExtendedTextMessage {
-      text: 'b',
+      text: '2',
       contextInfo: [ContextInfo],
       inviteLinkGroupTypeV2: 0
     },
@@ -87,21 +91,22 @@
       deviceListMetadataVersion: 2
     }
   },
-  body: 'b',
+  body: '2',
   from: '5493804509885'
 }
 [handleMsg]:  {
   key: {
     remoteJid: '5493804509885@s.whatsapp.net',
     fromMe: false,
-    id: '3EB032120AF91B1214A519',
+    id: '3EB0D3F35063AFB81128BE',
     participant: undefined
   },
-  messageTimestamp: 1681570914,
+  messageTimestamp: 1688169453,
   pushName: 'eric',
+  broadcast: false,
   message: Message {
     extendedTextMessage: ExtendedTextMessage {
-      text: '15-04-2023',
+      text: '1',
       contextInfo: [ContextInfo],
       inviteLinkGroupTypeV2: 0
     },
@@ -110,21 +115,22 @@
       deviceListMetadataVersion: 2
     }
   },
-  body: '15-04-2023',
+  body: '1',
   from: '5493804509885'
 }
 [handleMsg]:  {
   key: {
     remoteJid: '5493804509885@s.whatsapp.net',
     fromMe: false,
-    id: '3EB03C05484C1A431A93F6',
+    id: '3EB0823F93EAF9051696D6',
     participant: undefined
   },
-  messageTimestamp: 1681570936,
+  messageTimestamp: 1688169462,
   pushName: 'eric',
+  broadcast: false,
   message: Message {
     extendedTextMessage: ExtendedTextMessage {
-      text: 'eric',
+      text: '31-06',
       contextInfo: [ContextInfo],
       inviteLinkGroupTypeV2: 0
     },
@@ -133,44 +139,150 @@
       deviceListMetadataVersion: 2
     }
   },
-  body: 'eric',
+  body: '31-06',
   from: '5493804509885'
 }
 [handleMsg]:  {
   key: {
-    remoteJid: '5493804646761@s.whatsapp.net',
+    remoteJid: '5493804509885@s.whatsapp.net',
     fromMe: false,
-    id: '7DEA20D5883F07BC8E39C7F1E371B89B',
+    id: '3EB08CC9C7E68C8BB1E9A1',
     participant: undefined
   },
-  messageTimestamp: 1681572394,
-  pushName: 'Diego',
+  messageTimestamp: 1688169488,
+  pushName: 'eric',
+  broadcast: false,
   message: Message {
-    conversation: 'Bot',
+    extendedTextMessage: ExtendedTextMessage {
+      text: '7-02',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
-  body: 'Bot',
-  from: '5493804646761'
+  body: '7-02',
+  from: '5493804509885'
 }
 [handleMsg]:  {
   key: {
-    remoteJid: '5493804646761@s.whatsapp.net',
+    remoteJid: '5493804509885@s.whatsapp.net',
     fromMe: false,
-    id: '89ACAD2D4E8E7EC3511C2C71484EC141',
+    id: '3EB0C7F5FE35CB41DB82A3',
     participant: undefined
   },
-  messageTimestamp: 1681572401,
-  pushName: 'Diego',
+  messageTimestamp: 1688169496,
+  pushName: 'eric',
+  broadcast: false,
   message: Message {
-    conversation: 'B',
+    extendedTextMessage: ExtendedTextMessage {
+      text: '07-02',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
-  body: 'B',
-  from: '5493804646761'
+  body: '07-02',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0DC3CE1F0455C207040',
+    participant: undefined
+  },
+  messageTimestamp: 1688169502,
+  pushName: 'eric',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '2',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '2',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB04B5FBC619CE4A582AB',
+    participant: undefined
+  },
+  messageTimestamp: 1688169509,
+  pushName: 'eric',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'Limon',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Limon',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0DAEE67EDB6E057C6A7',
+    participant: undefined
+  },
+  messageTimestamp: 1688169518,
+  pushName: 'eric',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '3',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '3',
+  from: '5493804509885'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '5493804509885@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB034BF65B8B9097D2E4F',
+    participant: undefined
+  },
+  messageTimestamp: 1688169546,
+  pushName: 'eric',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '1',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '5493804509885'
 }
