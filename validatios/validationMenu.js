@@ -19,8 +19,6 @@ const validationCapacidad = (cant) => {
 const validationOpciones = (cantidad, opcion) => {
     const cantOp = parseInt(cantidad);
     const regex = new RegExp(`^[1-${cantOp}]$`);
-    console.log(regex);
-    console.log(regex.test(opcion));
     return regex.test(opcion);
 };
 

@@ -20,7 +20,12 @@ const flowPrecios = require("./flows/flowPrecios");
 
 
 const flowPrincipal = addKeyword(['hola', 'buenas', 'que tal', 'oli'])
-    .addAnswer(['¡Hola! soy Delta y seré tu asistente.', 'Cuéntame, ¿En que puedo ayudarte?, te muestro algunas opciones.'])
+    .addAnswer(['👋 ¡Hola! soy Delta y seré tu asistente.'], null,
+        async (ctx, { flowDynamic }) => {
+            const nameTel = ctx.pushName;
+            // console.log(ctx);
+            await flowDynamic(`Cuéntame *${nameTel}*, ¿En que puedo ayudarte?, te muestro algunas opciones.`)
+        })
     .addAnswer(['*1)* Reservar', '*2)* Precios', '*3)* Más información'])
     .addAnswer(['Elige una de la opciones para continuar.'],
         { capture: true },

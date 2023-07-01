@@ -12,7 +12,7 @@ const moment = require("moment");
 moment.locale('es');
 
 const { validationMenu, validationCapacidad, validationOpciones } = require('../validatios/validationMenu');
-const { validationFechaReserva, validationCantidadDias, validationFechaInvalida } = require('../validatios/validationFecha');
+const { validationFechaReserva, validationCantidadDias, validationFechaInvalida, validationFechaMenor } = require('../validatios/validationFecha');
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 let idCliente;
@@ -29,7 +29,6 @@ let contAlojamientos = 0;
 /**
  * REGEX
  */
-let regexOpciones;
 
 const regexFecha = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])$";
 const regexCantNoches = "^[1-9]$";
@@ -138,6 +137,12 @@ const flowFechaInicioReserva = addKeyword(['flowFechaInicioReserva'])
             if (validationFechaInvalida(fechaInicio)) {
                 await delay(500);
                 await fallBack('Ingresá una fecha correcta.');
+                return;
+            };
+
+            if (validationFechaMenor(fechaInicio)) {
+                await delay(500);
+                await fallBack('Ingresá una fecha posterior a la actual.');
                 return;
             };
 
