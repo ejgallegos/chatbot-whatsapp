@@ -8,13 +8,17 @@ const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 const { validationMenu } = require('./validatios/validationMenu');
 
-const { getCliente, registerCliente } = require('./api/servicesClientes');
+const { getListClientes, getCliente, registerCliente } = require('./api/servicesClientes');
 
 /**Flows
  * 
  */
 
-const { flowReservar, flowAlojamientos, flowFechaInicioReserva, flowFechaFinalReserva } = require("./flows/flowReservar");
+const { flowReservar,
+    flowAlojamientos,
+    flowFechaInicioReserva,
+    flowFechaFinalReserva,
+    flowFechaNoDisponible } = require("./flows/flowReservar");
 const flowCerrarConversacion = require("./flows/flowCerrarConversacion");
 const flowPrecios = require("./flows/flowPrecios");
 
@@ -33,11 +37,20 @@ const flowPrincipal = addKeyword(['hola', 'buenas', 'que tal', 'oli'])
             const tel = ctx.from;
 
             try {
-                const cliente = await getCliente(tel);
+                const listClientes = await getListClientes();
 
-                if (cliente.length === 0) {
+                if (listClientes.length > 0) {
+                    const cliente = await getCliente(tel);
+
+                    if (cliente.length === 0) {
+                        await registerCliente(tel);
+                    };
+                };
+
+                if (listClientes.length === 0) {
                     await registerCliente(tel);
                 };
+
 
                 const respuestaOpcion = ctx.body.toLowerCase();
                 if (!validationMenu(respuestaOpcion)) {
@@ -63,7 +76,8 @@ const main = async () => {
             flowPrincipal,
             flowCerrarConversacion,
             flowFechaInicioReserva,
-            flowFechaFinalReserva
+            flowFechaFinalReserva,
+            flowFechaNoDisponible
         ])
     const adapterProvider = createProvider(BaileysProvider)
 

@@ -6,6 +6,23 @@ const ENVIRONMENT_STRAPI = process.env.ENVIRONMENT === 'develop' ? process.env.U
 /**
  * STRAPI API
  */
+const getListClientes = async () => {
+    try {
+        var config = {
+            method: 'get',
+            url: `${ENVIRONMENT_STRAPI}/clientes`,
+            headers: {
+                Authorization: `Bearer ${process.env.TOKEN_API_STRAPI}`,
+            },
+        };
+        const response = await axios(config);
+        return response.data.data;
+    } catch (error) {
+        handleHttpError(error);
+    };
+
+};
+
 const getCliente = async (telefono) => {
     try {
         var config = {
@@ -16,7 +33,6 @@ const getCliente = async (telefono) => {
             },
         };
         const response = await axios(config);
-        // console.log(response.data.data);
         return response.data.data;
     } catch (error) {
         handleHttpError(error);
@@ -78,4 +94,4 @@ const updateCliente = async (id, telefono, nombreApellido = '', email = 'email@e
 
 };
 
-module.exports = { getCliente, registerCliente, updateCliente };
+module.exports = { getListClientes, getCliente, registerCliente, updateCliente };

@@ -22,7 +22,7 @@ const getAlojamientos = async (capacidad) => {
     try {
         var config = {
             method: 'get',
-            url: `${ENVIRONMENT_STRAPI}/alojamientos?filters[capacidad][$eq]=${cap}`,
+            url: `${ENVIRONMENT_STRAPI}/alojamientos?filters[capacidad][$lte]=${cap}`,
             headers: {
                 Authorization: `Bearer ${process.env.TOKEN_API_STRAPI}`,
             },
