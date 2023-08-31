@@ -3,7 +3,7 @@ const { addKeyword, addChild } = require('@bot-whatsapp/bot');
 /**
  * Servicios API Strapi
 */
-const { verificaFechaReserva, registrarReserva } = require('../api/servicesReservas');
+const { verificaFechaReserva, registrarReserva, verificaFechasDisponibles } = require('../api/servicesReservas');
 const { getCliente, registerCliente, updateCliente } = require('../api/servicesClientes');
 const { getAlojamientos } = require('../api/servicesAlojamientos');
 
@@ -30,8 +30,8 @@ let contAlojamientos = 0;
  * REGEX
  */
 
-const regexFecha = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])$";
-const regexCantNoches = "^[1-9]$";
+const regexFecha = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])$/;
+const regexCantNoches = /^[1-9]$/;
 const regexCantPersonas = /^[1-6]$/;
 
 /**
@@ -111,21 +111,36 @@ const flowNombreApellido = addKeyword([regexCantNoches], { regex: true })
 
         }, [flowInfoReserva]);
 
+const flowMesFechasDisponibles = addKeyword(['flowMesFechasDisponibles'])
+    .addAnswer(['Bien, ahora ingresa el mes en número para ver la disponibilidad, por ejemplo: 08'], { capture: true },
+        async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
+            const mesIngresado = ctx.body;
+            let fechasMesDisponibles = '';
+            fechasMesDisponibles = await verificaFechasDisponibles(mesIngresado, idAlojamiento);
+            const { nombreMes, diasDelMes } = fechasMesDisponibles;
+            await delay(500);
+            await flowDynamic(`${nombreMes}`);
+            await delay(500);
+            await flowDynamic(`${diasDelMes}`);
+            await gotoFlow(flowFechaNoDisponible);
+        });
+
 const flowFechaNoDisponible = addKeyword(['flowFechaNoDisponible'])
-    .addAnswer(['*1)* Ingresar nueva fecha', '*2)* Seleccionar otro Alojamiento'])
+    .addAnswer(['*1)* Ingresar nueva fecha', '*2)* Seleccionar otro Alojamiento', '*3)* Ver diponibilidad de fechas'])
     .addAnswer(['Elige una de la opciones para continuar.'], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
             const opcionIngresada = parseInt(ctx.body);
 
-            if (!validationOpciones(2, opcionIngresada)) {
+            if (!validationOpciones(3, opcionIngresada)) {
                 await delay(500);
                 await fallBack('Ingresá una opción válida.');
                 return;
             };
 
             const opciones = {
-                1: 'flowFechaInicioReserva',
-                2: 'flowReservar'
+                1: flowFechaInicioReserva,
+                2: flowReservar,
+                3: flowMesFechasDisponibles,
             };
 
             await delay(500);
@@ -243,4 +258,4 @@ const flowReservar = addKeyword('1')
         }, [flowAlojamientos]);
 
 
-module.exports = { flowReservar, flowAlojamientos, flowFechaInicioReserva, flowFechaFinalReserva, flowFechaNoDisponible };
+module.exports = { flowReservar, flowAlojamientos, flowFechaInicioReserva, flowFechaFinalReserva, flowFechaNoDisponible, flowMesFechasDisponibles };

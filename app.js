@@ -18,7 +18,8 @@ const { flowReservar,
     flowAlojamientos,
     flowFechaInicioReserva,
     flowFechaFinalReserva,
-    flowFechaNoDisponible } = require("./flows/flowReservar");
+    flowFechaNoDisponible,
+    flowMesFechasDisponibles } = require("./flows/flowReservar");
 const flowCerrarConversacion = require("./flows/flowCerrarConversacion");
 const flowPrecios = require("./flows/flowPrecios");
 
@@ -77,7 +78,8 @@ const main = async () => {
             flowCerrarConversacion,
             flowFechaInicioReserva,
             flowFechaFinalReserva,
-            flowFechaNoDisponible
+            flowFechaNoDisponible,
+            flowMesFechasDisponibles
         ])
     const adapterProvider = createProvider(BaileysProvider)
 
