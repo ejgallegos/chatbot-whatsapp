@@ -6,21 +6,31 @@ const BaileysProvider = require('@bot-whatsapp/provider/baileys');
 const MockAdapter = require('@bot-whatsapp/database/mock');
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-const { validationMenu } = require('./validatios/validationMenu');
+/**
+ * Respuestas constantes
+ */
+const { MSJ_OPCIONES } = require('./helpers/constantsResponse');
 
+/**
+ * Validaciones
+ */
+const { validationMenu, validationOpciones } = require('./validatios/validationMenu');
+
+/**
+ * Api Strapi
+ */
 const { getListClientes, getCliente, registerCliente } = require('./api/servicesClientes');
 
 /**Flows
  * 
  */
-
 const { flowReservar,
     flowAlojamientos,
     flowFechaInicioReserva,
     flowFechaFinalReserva,
     flowFechaNoDisponible,
     flowMesFechasDisponibles } = require("./flows/flowReservar");
-const flowCerrarConversacion = require("./flows/flowCerrarConversacion");
+const { flowCerrarConversacion } = require("./flows/flowCerrarConversacion");
 const flowPrecios = require("./flows/flowPrecios");
 
 
@@ -29,10 +39,10 @@ const flowPrincipal = addKeyword(['hola', 'buenas', 'que tal', 'oli'])
         async (ctx, { flowDynamic }) => {
             const nameTel = ctx.pushName;
             // console.log(ctx);
-            await flowDynamic(`Cuéntame *${nameTel}*, ¿En que puedo ayudarte?, te muestro algunas opciones.`)
+            await flowDynamic(`Cuentame *${nameTel}*, ¿En que puedo ayudarte?, te muestro algunas opciones.`)
         })
-    .addAnswer(['*1)* Reservar', '*2)* Precios', '*3)* Más información'])
-    .addAnswer(['Elige una de la opciones para continuar.'],
+    .addAnswer(['*1)* Reservar', '*2)* Buscar disponibilidad', '*3)* Más información', '*4)* Salir'])
+    .addAnswer([MSJ_OPCIONES["elegir-opcion"]],
         { capture: true },
         async (ctx, { flowDynamic, gotoFlow, fallBack, endFlow }) => {
             const tel = ctx.from;
@@ -54,11 +64,21 @@ const flowPrincipal = addKeyword(['hola', 'buenas', 'que tal', 'oli'])
 
 
                 const respuestaOpcion = ctx.body.toLowerCase();
-                if (!validationMenu(respuestaOpcion)) {
+                if (!validationOpciones(4, respuestaOpcion)) {
                     await delay(500);
                     await fallBack();
                     return;
                 };
+
+                const opciones = {
+                    1: flowReservar,
+                    2: flowMesFechasDisponibles,
+                    3: flowReservar,
+                    4: flowCerrarConversacion,
+                };
+
+                await delay(500);
+                await gotoFlow(opciones[respuestaOpcion]);
 
             } catch (error) {
                 await delay(500);
@@ -67,7 +87,7 @@ const flowPrincipal = addKeyword(['hola', 'buenas', 'que tal', 'oli'])
                 return;
             };
 
-        }, [flowReservar]
+        }
     );
 
 const main = async () => {
@@ -75,11 +95,12 @@ const main = async () => {
     const adapterFlow = createFlow(
         [
             flowPrincipal,
-            flowCerrarConversacion,
+            flowReservar,
             flowFechaInicioReserva,
             flowFechaFinalReserva,
             flowFechaNoDisponible,
-            flowMesFechasDisponibles
+            flowMesFechasDisponibles,
+            flowCerrarConversacion,
         ])
     const adapterProvider = createProvider(BaileysProvider)
 

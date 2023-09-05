@@ -12,4 +12,4 @@ const flowCerrarConversacion = addKeyword([['chau', 'cierrechat']])
         }
     );
 
-module.exports = flowCerrarConversacion;
+module.exports = { flowCerrarConversacion };

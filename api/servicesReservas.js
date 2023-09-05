@@ -26,6 +26,7 @@ const verificaFechasDisponibles = async (mes, idAlojamiento) => {
     };
 
 };
+
 const verificaFechaReserva = async (fechaDesde, fechaFinal, idAlojamiento) => {
     console.log({ fechaDesde, fechaFinal, idAlojamiento })
     try {
@@ -73,6 +74,9 @@ const registrarReserva = async (fechaReserva, idAlojamiento, fechaInicio, fechaF
         });
 
 };
+/**
+ * STRAPI API
+ */
 
 const obtenerDiasOcupadosPorMes = (datos, mes, idAlojamiento) => {
     const reserva = datos.data.find(item => item.id === idAlojamiento);

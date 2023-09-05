@@ -7,11 +7,16 @@ const { verificaFechaReserva, registrarReserva, verificaFechasDisponibles } = re
 const { getCliente, registerCliente, updateCliente } = require('../api/servicesClientes');
 const { getAlojamientos } = require('../api/servicesAlojamientos');
 
+/**
+ * Respuestas constantes
+ */
+const { MSJ_OPCIONES, MSJ_FECHAS } = require('./../helpers/constantsResponse');
+
 
 const moment = require("moment");
 moment.locale('es');
 
-const { validationMenu, validationCapacidad, validationOpciones } = require('../validatios/validationMenu');
+const { validationCapacidad, validationOpciones } = require('../validatios/validationMenu');
 const { validationFechaReserva, validationCantidadDias, validationFechaInvalida, validationFechaMenor } = require('../validatios/validationFecha');
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -53,7 +58,7 @@ const flowInfoReserva = addKeyword('')
             const opcionIngresada = ctx.body.toLowerCase();
             if (!validationOpciones(2, opcionIngresada)) {
                 await delay(500);
-                await fallBack('Ingresá una opción válida.');
+                await fallBack(MSJ_OPCIONES['opcion-invalida']);
                 return;
             };
 
@@ -71,13 +76,13 @@ const flowInfoReserva = addKeyword('')
             } catch (error) {
                 await delay(500);
                 await flowDynamic(error.message);
-                await fallBack('Disculpa por el inconveniente, dime ¿Desea confirmar la reserva?');
+                await fallBack('Disculpa por el inconveniente, decime ¿Deseas confirmar la reserva?');
                 return;
             }
         });
 
 const flowNombreApellido = addKeyword([regexCantNoches], { regex: true })
-    .addAnswer(['¡Perfecto! Ahora, dime tu Nombre y Apellido.'],
+    .addAnswer(['¡Perfecto! Ahora, decime tu Nombre y Apellido.'],
         { capture: true },
         async (ctx, { flowDynamic, fallBack }) => {
             const tel = ctx.from;
@@ -105,14 +110,14 @@ const flowNombreApellido = addKeyword([regexCantNoches], { regex: true })
             } catch (error) {
                 await delay(500);
                 await flowDynamic(error.message);
-                await fallBack('Disculpa por el inconveniente, dime nuevamente tu Nombre y Apellido.');
+                await fallBack('Disculpa por el inconveniente, decime nuevamente tu Nombre y Apellido.');
                 return;
             }
 
         }, [flowInfoReserva]);
 
 const flowMesFechasDisponibles = addKeyword(['flowMesFechasDisponibles'])
-    .addAnswer(['Bien, ahora ingresa el mes en número para ver la disponibilidad, por ejemplo: 08'], { capture: true },
+    .addAnswer(['Bien, ahora ingresá el número del mes que quieres saber la disponibilidad; ejemplo *08*'], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
             const mesIngresado = ctx.body;
             let fechasMesDisponibles = '';
@@ -127,13 +132,13 @@ const flowMesFechasDisponibles = addKeyword(['flowMesFechasDisponibles'])
 
 const flowFechaNoDisponible = addKeyword(['flowFechaNoDisponible'])
     .addAnswer(['*1)* Ingresar nueva fecha', '*2)* Seleccionar otro Alojamiento', '*3)* Ver diponibilidad de fechas'])
-    .addAnswer(['Elige una de la opciones para continuar.'], { capture: true },
+    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
             const opcionIngresada = parseInt(ctx.body);
 
             if (!validationOpciones(3, opcionIngresada)) {
                 await delay(500);
-                await fallBack('Ingresá una opción válida.');
+                await fallBack(MSJ_OPCIONES['opcion-invalida']);
                 return;
             };
 
@@ -148,14 +153,14 @@ const flowFechaNoDisponible = addKeyword(['flowFechaNoDisponible'])
         });
 
 const flowFechaFinalReserva = addKeyword(['flowFechaFinalReserva'])
-    .addAnswer(['¡Bien! Ahora, ingresá la *cantidad de noche/s* que te alojarás.', 'Ingresá la cantidad representada en un *número*; ej. 3'], { capture: true },
+    .addAnswer(['¡Bien! Ahora, ingresá la *cantidad de noche/s* que te alojarás.', 'La cantidad debe ser representada por un *número*; ejemplo *3*.'], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
             const cantDias = parseInt(ctx.body);
             console.log({ cantDias });
 
             if (!validationCantidadDias(cantDias)) {
                 await delay(500);
-                await fallBack('Ingresá la cantidad de noches.');
+                await fallBack(MSJ_OPCIONES['opcion-cantidad-noches']);
                 return;
             };
 
@@ -166,7 +171,7 @@ const flowFechaFinalReserva = addKeyword(['flowFechaFinalReserva'])
 
             if (!fechaDisponible.length == 0) {
                 console.log({ fechaFinal }, { fechaDisponible });
-                await flowDynamic('Lamentablemente no tenemos disponibilidad para la fecha que ingresaste.');
+                await flowDynamic(MSJ_FECHAS['fecha-no-disponible']);
                 await gotoFlow(flowFechaNoDisponible);
             };
 
@@ -174,7 +179,7 @@ const flowFechaFinalReserva = addKeyword(['flowFechaFinalReserva'])
 
 const flowFechaInicioReserva = addKeyword(['flowFechaInicioReserva'])
     .addAnswer(['¡Perfecto! Continuemos, decime la fecha de *ingreso*.'])
-    .addAnswer(['Sólo necesito el día y el mes DD-MM.', 'Por favor hazlo con éste formato. Ej. 31-12'], { capture: true },
+    .addAnswer(['Sólo necesito el día y el mes *DD-MM*.', 'Por favor hazlo con éste formato; ejemplo *31-12*'], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
             const fInicio = ctx.body;
             const dia = fInicio.substring(0, 2);
@@ -183,19 +188,19 @@ const flowFechaInicioReserva = addKeyword(['flowFechaInicioReserva'])
 
             if (validationFechaInvalida(fechaInicio)) {
                 await delay(500);
-                await fallBack('Ingresá una fecha correcta.');
+                await fallBack(MSJ_FECHAS['fecha-incorrecta']);
                 return;
             };
 
             if (validationFechaMenor(fechaInicio)) {
                 await delay(500);
-                await fallBack('Ingresá una fecha posterior a la actual.');
+                await fallBack(MSJ_FECHAS['fecha-posterior']);
                 return;
             };
 
             if (!validationFechaReserva(fInicio)) {
                 await delay(500);
-                await fallBack('Ingresá una fecha con el formato correcto.');
+                await fallBack(MSJ_FECHAS['fecha-formato-incorrecto']);
                 return;
             };
 
@@ -212,7 +217,7 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             contAlojamientos += 1;
         };
     })
-    .addAnswer(['Elige alguna de las opciones que te mostré.'], { capture: true },
+    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack, gotoFlow }) => {
             const optionAlojamiento = ctx.body;
 
@@ -229,9 +234,9 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
         });
 
 const flowReservar = addKeyword('1')
-    .addAnswer('¡Perfecto! Voy a gestionar tu reserva. Cuentame, ¿Para cuantas personas necesitas?')
+    .addAnswer('¡Perfecto! Voy a gestionar tu reserva. Decime, ¿Para cuantas personas necesitas?')
     .addAnswer(['*1)* Una', '*2)* Dos', '*3)* Tres', '*4)* Cuatro', '*5)* Cinco', '*6)* Seis'])
-    .addAnswer(['Elige una de la opciones para continuar.'], { capture: true },
+    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack }) => {
             const cantidadPersonas = ctx.body.toLowerCase();
 
