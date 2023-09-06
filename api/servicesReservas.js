@@ -102,7 +102,7 @@ const obtenerDiasOcupadosPorMes = (datos, mes, idAlojamiento) => {
 
     // Llenar los primeros espacios vacíos si el primer día no es un lunes
     for (let i = 0; i < primerDiaDelMes.getDay(); i++) {
-        diasDelMes.push('---');
+        diasDelMes.push(' --- ');
     }
 
     for (let día = 1; día <= ultimoDiaDelMes.getDate(); día++) {
