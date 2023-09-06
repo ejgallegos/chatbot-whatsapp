@@ -10,6 +10,7 @@ const delay = (ms) => new Promise((res) => setTimeout(res, ms));
  * Respuestas constantes
  */
 const { MSJ_OPCIONES } = require('./helpers/constantsResponse');
+const { MENU } = require('./helpers/constantsMenu');
 
 /**
  * Validaciones
@@ -25,13 +26,14 @@ const { getListClientes, getCliente, registerCliente } = require('./api/services
  * 
  */
 const { flowReservar,
-    flowAlojamientos,
     flowFechaInicioReserva,
     flowFechaFinalReserva,
     flowFechaNoDisponible,
     flowMesFechasDisponibles } = require("./flows/flowReservar");
 const { flowCerrarConversacion } = require("./flows/flowCerrarConversacion");
-const flowPrecios = require("./flows/flowPrecios");
+//const flowPrecios = require("./flows/flowPrecios");
+const { flowListarAlojamientos, flowVerFechaDisponible, flowVerFechaNoDisponible } = require("./flows/flowFechaDisponible");
+const { flowListarAlojamientos_3, flowVolverMenuPrincipal_3 } = require("./flows/flowAlojamientos");
 
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
@@ -41,7 +43,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
             // console.log(ctx);
             await flowDynamic(`Cuentame *${nameTel}*, ¿En que puedo ayudarte?, te muestro algunas opciones.`)
         })
-    .addAnswer(['*1)* Reservar', '*2)* Buscar disponibilidad', '*3)* Más información', '*4)* Salir'])
+    .addAnswer([MENU["menu-principal"]])
     .addAnswer([MSJ_OPCIONES["elegir-opcion"]],
         { capture: true },
         async (ctx, { flowDynamic, gotoFlow, fallBack, endFlow }) => {
@@ -72,8 +74,8 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
 
                 const opciones = {
                     1: flowReservar,
-                    2: flowMesFechasDisponibles,
-                    3: flowReservar,
+                    2: flowListarAlojamientos,
+                    3: flowListarAlojamientos_3,
                     4: flowCerrarConversacion,
                 };
 
@@ -101,6 +103,11 @@ const main = async () => {
             flowFechaNoDisponible,
             flowMesFechasDisponibles,
             flowCerrarConversacion,
+            flowListarAlojamientos,
+            flowVerFechaNoDisponible,
+            flowVerFechaDisponible,
+            flowListarAlojamientos_3,
+            flowVolverMenuPrincipal_3
         ])
     const adapterProvider = createProvider(BaileysProvider)
 
