@@ -1,5 +1,5 @@
 const MSJ_OPCIONES = {
-    "elegir-opcion": "Elige el número de las opciones que te mostré.",
+    "elegir-opcion": "Elige el número correspondiente a una de las opciones que te presenté.",
     "opcion-invalida": "Ingresá una opción válida.",
     "opcion-cantidad-noches": "Ingresá la cantidad de noches.",
 };

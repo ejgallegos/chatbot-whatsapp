@@ -137,7 +137,7 @@ const flowMesFechasDisponibles = addKeyword(['flowMesFechasDisponibles'])
         });
 
 const flowFechaNoDisponible = addKeyword(['flowFechaNoDisponible'])
-    .addAnswer(['*1)* Ingresar nueva fecha', '*2)* Seleccionar otro Alojamiento', '*3)* Ver diponibilidad de fechas'])
+    .addAnswer(['*1)* Ingresar nueva fecha', '*2)* Seleccionar otro alojamiento', '*3)* Ver fecha disponible'])
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
             const opcionIngresada = parseInt(ctx.body);
@@ -239,7 +239,7 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             gotoFlow(flowFechaInicioReserva);
         });
 
-const flowReservar = addKeyword('1')
+const flowReservar = addKeyword(['flowReservar'])
     .addAnswer('¡Perfecto! Voy a gestionar tu reserva. Decime, ¿Para cuantas personas necesitas?')
     .addAnswer(['*1)* Una', '*2)* Dos', '*3)* Tres', '*4)* Cuatro', '*5)* Cinco', '*6)* Seis'])
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
