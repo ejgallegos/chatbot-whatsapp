@@ -34,7 +34,7 @@ const { flowCerrarConversacion } = require("./flows/flowCerrarConversacion");
 const flowPrecios = require("./flows/flowPrecios");
 
 
-const flowPrincipal = addKeyword(['hola', 'buenas', 'que tal', 'oli'])
+const flowPrincipal = addKeyword(EVENTS.WELCOME)
     .addAnswer(['👋 ¡Hola! soy Delta y seré tu asistente.'], null,
         async (ctx, { flowDynamic }) => {
             const nameTel = ctx.pushName;
