@@ -11,4 +11,17 @@ const MSJ_FECHAS = {
     "fecha-no-disponible": "Lamentablemente no tenemos disponibilidad para la fecha que ingresaste.",
 };
 
-module.exports = { MSJ_OPCIONES, MSJ_FECHAS };
+const MSJ_CONFIRMACION = {
+    "confirmacion-previa": "En pocos minutos se contactará un Agente para confirmar tu Reserva.",
+    "confirmacion-ok": "¡Gracias por la confirmación!",
+};
+
+const MSJ_CIERRE_FLUJO = {
+    "cierre-despedida": "¡Gracias por la comunicación, estoy atento para una nueva conversación!",
+};
+
+const MSJ_ERROR = {
+    "error-servicio": "Disculpa por el inconveniente.",
+};
+
+module.exports = { MSJ_OPCIONES, MSJ_FECHAS, MSJ_CONFIRMACION, MSJ_CIERRE_FLUJO, MSJ_ERROR };

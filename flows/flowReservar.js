@@ -1,5 +1,8 @@
 const { addKeyword, addChild } = require('@bot-whatsapp/bot');
 
+const moment = require("moment");
+moment.locale('es');
+
 /**
  * Servicios API Strapi
 */
@@ -10,16 +13,31 @@ const { getAlojamientos } = require('../api/servicesAlojamientos');
 /**
  * Respuestas constantes
  */
-const { MSJ_OPCIONES, MSJ_FECHAS } = require('./../helpers/constantsResponse');
+const { MSJ_OPCIONES, MSJ_FECHAS, MSJ_CONFIRMACION, MSJ_CIERRE_FLUJO, MSJ_ERROR } = require('./../helpers/constantsResponse');
 
-
-const moment = require("moment");
-moment.locale('es');
-
+/**
+ * Validaciones
+ */
 const { validationCapacidad, validationOpciones } = require('../validatios/validationMenu');
 const { validationFechaReserva, validationCantidadDias, validationFechaInvalida, validationFechaMenor } = require('../validatios/validationFecha');
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
+/**
+ * REGEX
+*/
+const regexFecha = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])$/;
+const regexCantNoches = /^[1-9]$/;
+const regexCantPersonas = /^[1-6]$/;
+
+/**
+ * FECHAS
+*/
+const anioActual = moment().format('YYYY');
+let fechaReserva = moment().format('YYYY-MM-DD');
+
+/**
+ * Variables
+ */
 let idCliente;
 let idAlojamiento;
 let denominacionAlojamiento;
@@ -27,24 +45,12 @@ let cantPersonas;
 let fechaInicio;
 let fechaFinal;
 let nombreApellido;
-
 let arrayAlojamientos;
 let contAlojamientos = 0;
 
 /**
- * REGEX
+ * FLUJOS
  */
-
-const regexFecha = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])$/;
-const regexCantNoches = /^[1-9]$/;
-const regexCantPersonas = /^[1-6]$/;
-
-/**
- * FECHAS
- */
-const anioActual = moment().format('YYYY');
-let fechaReserva = moment().format('YYYY-MM-DD');
-
 const flowInfoReserva = addKeyword('')
     .addAnswer(['¡Perfecto! Por último, te muestro la información completa de la previa reserva.'], null, (ctx, { flowDynamic }) => {
 
@@ -66,17 +72,17 @@ const flowInfoReserva = addKeyword('')
 
                 if (opcionIngresada === '1') {
                     registrarReserva(fechaReserva, idAlojamiento, fechaInicio, fechaFinal, idCliente, telefono);
-                    await flowDynamic('En pocos minutos se contactará un Agente para confirmar tu Reserva.');
-                    await endFlow('¡Gracias por la confirmación!')
+                    await flowDynamic(MSJ_CONFIRMACION['confirmacion-previa']);
+                    await endFlow(MSJ_CONFIRMACION['confirmacion-ok'])
                     return;
                 };
-                await endFlow('¡Gracias por la comunicación, estoy atento para una nueva conversación!');
+                await endFlow(MSJ_CIERRE_FLUJO['cierre-despedida']);
                 return;
 
             } catch (error) {
                 await delay(500);
                 await flowDynamic(error.message);
-                await fallBack('Disculpa por el inconveniente, decime ¿Deseas confirmar la reserva?');
+                await fallBack(`${MSJ_ERROR['error-servicio']} Decime ¿Deseas confirmar la reserva?`);
                 return;
             }
         });
@@ -110,7 +116,7 @@ const flowNombreApellido = addKeyword([regexCantNoches], { regex: true })
             } catch (error) {
                 await delay(500);
                 await flowDynamic(error.message);
-                await fallBack('Disculpa por el inconveniente, decime nuevamente tu Nombre y Apellido.');
+                await fallBack(`${MSJ_ERROR['error-servicio']} Decime nuevamente tu Nombre y Apellido.`);
                 return;
             }
 
