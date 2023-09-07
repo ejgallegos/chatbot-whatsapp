@@ -9,3 +9,6 @@ bot.qr.png
 
 #VARIABLES DE ENTORNO
 .env
+
+#LOGS
+queue.class.log
