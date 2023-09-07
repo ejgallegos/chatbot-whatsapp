@@ -13,11 +13,14 @@ const { getAlojamientos } = require('../api/servicesAlojamientos');
  * Respuestas constantes
  */
 const { MSJ_OPCIONES } = require('./../helpers/constantsResponse');
+const { MENU } = require('./../helpers/constantsMenu');
 
 /**
  * Otros Flujos
  */
-const { flowMenuPrincipal } = require("./flowMenu");
+const { flowReservar } = require("./flowReservar");
+const { flowListarAlojamientos } = require("./flowAlojamientos");
+const { flowCerrarConversacion } = require("./flowCerrarConversacion");
 
 /**
  * Validaciones
@@ -43,6 +46,30 @@ let contAlojamientos = 0;
 /**
  * FLUJOS
  */
+const flowMenuFechaDisponible = addKeyword(['flowMenuFechaDisponible'])
+    .addAnswer('¿En que puedo ayudarte?, te muestro algunas opciones.')
+    .addAnswer([MENU['menu-principal']])
+    .addAnswer([MSJ_OPCIONES["elegir-opcion"]], { capture: true },
+        async (ctx, { gotoFlow, fallBack }) => {
+
+            const respuestaOpcion = parseInt(ctx.body);
+            if (!validationOpciones(4, respuestaOpcion)) {
+                await delay(500);
+                await fallBack();
+                return;
+            };
+
+            const opciones = {
+                1: flowReservar,
+                2: flowFechaDisponible,
+                3: flowListarAlojamientos,
+                4: flowCerrarConversacion,
+            };
+
+            await delay(500);
+            await gotoFlow(opciones[respuestaOpcion]);
+        });
+
 const flowVerFechaDisponible = addKeyword(['flowVerFechaDisponible'])
     .addAnswer(['Bien, ahora ingresá el número del mes que quieres saber la disponibilidad; ejemplo *08*'], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
@@ -70,9 +97,9 @@ const flowVerFechaNoDisponible = addKeyword(['flowVerFechaNoDiponible'])
             };
 
             const opciones = {
-                1: flowListarAlojamientos,
+                1: flowFechaDisponible,
                 2: flowVerFechaDisponible,
-                3: flowMenuPrincipal
+                3: flowMenuFechaDisponible
             };
 
             await delay(500);
@@ -105,9 +132,9 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             gotoFlow(flowVerFechaDisponible);
         });
 
-const flowListarAlojamientos = addKeyword('flowListarAlojamientos')
+const flowFechaDisponible = addKeyword(['flowFechaDisponible'])
     .addAnswer('¡Perfecto! Primero veamos el alojamiento que deseas. Decime, ¿Para cuantas personas necesitas?')
-    .addAnswer(['*1)* Una', '*2)* Dos', '*3)* Tres', '*4)* Cuatro', '*5)* Cinco', '*6)* Seis'])
+    .addAnswer([MENU['menu-cant-personas']])
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack }) => {
             const cantidadPersonas = ctx.body.toLowerCase();
@@ -135,4 +162,4 @@ const flowListarAlojamientos = addKeyword('flowListarAlojamientos')
         }, [flowAlojamientos]);
 
 
-module.exports = { flowListarAlojamientos, flowVerFechaNoDisponible, flowVerFechaDisponible };
+module.exports = { flowFechaDisponible, flowVerFechaNoDisponible, flowVerFechaDisponible, flowMenuFechaDisponible };

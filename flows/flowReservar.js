@@ -14,6 +14,7 @@ const { getAlojamientos } = require('../api/servicesAlojamientos');
  * Respuestas constantes
  */
 const { MSJ_OPCIONES, MSJ_FECHAS, MSJ_CONFIRMACION, MSJ_CIERRE_FLUJO, MSJ_ERROR } = require('./../helpers/constantsResponse');
+const { MENU } = require('./../helpers/constantsMenu');
 
 /**
  * Validaciones
@@ -241,7 +242,7 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
 
 const flowReservar = addKeyword(['flowReservar'])
     .addAnswer('¡Perfecto! Voy a gestionar tu reserva. Decime, ¿Para cuantas personas necesitas?')
-    .addAnswer(['*1)* Una', '*2)* Dos', '*3)* Tres', '*4)* Cuatro', '*5)* Cinco', '*6)* Seis'])
+    .addAnswer([MENU['menu-cant-personas']])
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack }) => {
             const cantidadPersonas = ctx.body.toLowerCase();

@@ -9,13 +9,13 @@ const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 /**
  * Respuestas constantes
  */
-const { MSJ_OPCIONES } = require('./helpers/constantsResponse');
+const { MSJ_OPCIONES, MSJ_ERROR } = require('./helpers/constantsResponse');
 const { MENU } = require('./helpers/constantsMenu');
 
 /**
  * Validaciones
  */
-const { validationMenu, validationOpciones } = require('./validatios/validationMenu');
+const { validationOpciones } = require('./validatios/validationMenu');
 
 /**
  * Api Strapi
@@ -25,22 +25,34 @@ const { getListClientes, getCliente, registerCliente } = require('./api/services
 /**Flows
  * 
  */
-const { flowReservar,
+const {
+    flowReservar,
     flowFechaInicioReserva,
     flowFechaFinalReserva,
     flowFechaNoDisponible,
-    flowMesFechasDisponibles } = require("./flows/flowReservar");
-const { flowCerrarConversacion } = require("./flows/flowCerrarConversacion");
-//const flowPrecios = require("./flows/flowPrecios");
-const { flowListarAlojamientos, flowVerFechaDisponible, flowVerFechaNoDisponible } = require("./flows/flowFechaDisponible");
-const { flowListarAlojamientos_3, flowVolverMenuPrincipal_3 } = require("./flows/flowAlojamientos");
+    flowMesFechasDisponibles
+} = require("./flows/flowReservar");
+const {
+    flowCerrarConversacion
+} = require("./flows/flowCerrarConversacion");
+const {
+    flowFechaDisponible,
+    flowVerFechaDisponible,
+    flowVerFechaNoDisponible,
+    flowMenuFechaDisponible
+} = require("./flows/flowFechaDisponible");
+const {
+    flowListarAlojamientos,
+    flowVolverMenuPrincipal,
+    flowFiltroAlojamientos,
+    flowMenuAlojamientos
+} = require("./flows/flowAlojamientos");
 
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
-    .addAnswer(['👋 ¡Hola! soy Delta y seré tu asistente.'], null,
+    .addAnswer(['👋 ¡Hola! soy 🤖 Delta y seré tu asistente.'], null,
         async (ctx, { flowDynamic }) => {
             const nameTel = ctx.pushName;
-            // console.log(ctx);
             await flowDynamic(`Cuentame *${nameTel}*, ¿En que puedo ayudarte?, te muestro algunas opciones.`)
         })
     .addAnswer([MENU["menu-principal"]])
@@ -74,8 +86,8 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
 
                 const opciones = {
                     1: flowReservar,
-                    2: flowListarAlojamientos,
-                    3: flowListarAlojamientos_3,
+                    2: flowFechaDisponible,
+                    3: flowListarAlojamientos,
                     4: flowCerrarConversacion,
                 };
 
@@ -85,7 +97,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
             } catch (error) {
                 await delay(500);
                 await flowDynamic(error.message);
-                await endFlow('Te pido disculpas, ¿Puedes intentar nuevamente? Gracias.');
+                await endFlow(MSJ_ERROR["error-intenta-nuevamente"]);
                 return;
             };
 
@@ -102,12 +114,15 @@ const main = async () => {
             flowFechaFinalReserva,
             flowFechaNoDisponible,
             flowMesFechasDisponibles,
+            flowFechaDisponible,
+            flowVerFechaDisponible,
+            flowVerFechaNoDisponible,
+            flowMenuFechaDisponible,
             flowCerrarConversacion,
             flowListarAlojamientos,
-            flowVerFechaNoDisponible,
-            flowVerFechaDisponible,
-            flowListarAlojamientos_3,
-            flowVolverMenuPrincipal_3
+            flowVolverMenuPrincipal,
+            flowFiltroAlojamientos,
+            flowMenuAlojamientos
         ])
     const adapterProvider = createProvider(BaileysProvider)
 
