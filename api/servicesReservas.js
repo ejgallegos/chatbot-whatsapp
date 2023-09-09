@@ -18,6 +18,7 @@ const verificaFechasDisponibles = async (mes, idAlojamiento) => {
         };
         const response = await axios(config);
         const data = response.data;
+        console.log({ data });
         const mesFechasDisponibles = obtenerDiasOcupadosPorMes(data, mes, idAlojamiento);
         console.log({ mesFechasDisponibles });
         return mesFechasDisponibles;
@@ -79,7 +80,7 @@ const registrarReserva = async (fechaReserva, idAlojamiento, fechaInicio, fechaF
  */
 
 const obtenerDiasOcupadosPorMes = (datos, mes, idAlojamiento) => {
-    const reserva = datos.data.find(item => item.id === idAlojamiento);
+    const reserva = datos.data.find(item => item.attributes.alojamiento.data.id === idAlojamiento);
 
     if (!reserva) {
         console.log('Alojamiento no encontrado');
