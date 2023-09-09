@@ -46,29 +46,6 @@ let contAlojamientos = 0;
 /**
  * FLUJOS
  */
-const flowMenuFechaDisponible = addKeyword(['flowMenuFechaDisponible'])
-    .addAnswer('¿En que puedo ayudarte?, te muestro algunas opciones.')
-    .addAnswer([MENU['menu-principal']])
-    .addAnswer([MSJ_OPCIONES["elegir-opcion"]], { capture: true },
-        async (ctx, { gotoFlow, fallBack }) => {
-
-            const respuestaOpcion = parseInt(ctx.body);
-            if (!validationOpciones(4, respuestaOpcion)) {
-                await delay(500);
-                await fallBack();
-                return;
-            };
-
-            const opciones = {
-                1: flowReservar,
-                2: flowFechaDisponible,
-                3: flowListarAlojamientos,
-                4: flowCerrarConversacion,
-            };
-
-            await delay(500);
-            await gotoFlow(opciones[respuestaOpcion]);
-        });
 
 const flowVerFechaDisponible = addKeyword(['flowVerFechaDisponible'])
     .addAnswer(['Bien, ahora ingresá el número del mes que quieres saber la disponibilidad; ejemplo *08*'], { capture: true },
@@ -77,33 +54,53 @@ const flowVerFechaDisponible = addKeyword(['flowVerFechaDisponible'])
             let fechasMesDisponibles = '';
             fechasMesDisponibles = await verificaFechasDisponibles(mesIngresado, idAlojamiento);
             const { nombreMes, diasDelMes } = fechasMesDisponibles;
-            await delay(500);
-            await flowDynamic(`${nombreMes}`);
-            await delay(500);
-            await flowDynamic(`${diasDelMes}`);
+
+            if (nombreMes !== undefined && diasDelMes !== undefined) {
+
+                await delay(500);
+                await flowDynamic(`${nombreMes}`);
+                await delay(500);
+                await flowDynamic(`${diasDelMes}`);
+                await flowDynamic('📆 Los días reservados están marcados con una *[X]*');
+
+            } else {
+
+                await flowDynamic('✅ El alojamiento que seleccionaste no registra reservas, por lo que tiene disponibilidad.');
+
+            };
+
             await gotoFlow(flowVerFechaNoDisponible);
         });
 
 const flowVerFechaNoDisponible = addKeyword(['flowVerFechaNoDiponible'])
-    .addAnswer(['*1)* Seleccionar otro alojamiento', '*2)* Ver fecha disponible', '*3)* Volver al menú principal'])
+    .addAnswer(['¿Puedo ayudarte en algo más?'])
+    .addAnswer(['*1)* Seleccionar otro alojamiento', '*2)* Ver otras fechas disponibles'])
+    .addAnswer(['💡 Escribí *MENU* para volver al menú principal'])
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
-            const opcionIngresada = parseInt(ctx.body);
 
-            if (!validationOpciones(3, opcionIngresada)) {
+            const menuArray = ['MENU', 'menu', 'MENÚ', 'menú', 'Menú', 'Menu'];
+            const opcionIngresada = !menuArray.includes(ctx.body) ? parseInt(ctx.body) : ctx.body.toLowerCase();
+            console.log(opcionIngresada);
+
+            if (typeof opcionIngresada === 'number') {
+
+                if (!validationOpciones(2, opcionIngresada)) {
+                    await delay(500);
+                    await fallBack(MSJ_OPCIONES['opcion-invalida']);
+                    return;
+                };
+
+                const opciones = {
+                    1: flowFechaDisponible,
+                    2: flowVerFechaDisponible,
+                };
+
                 await delay(500);
-                await fallBack(MSJ_OPCIONES['opcion-invalida']);
-                return;
+                await gotoFlow(opciones[opcionIngresada]);
             };
 
-            const opciones = {
-                1: flowFechaDisponible,
-                2: flowVerFechaDisponible,
-                3: flowMenuFechaDisponible
-            };
 
-            await delay(500);
-            await gotoFlow(opciones[opcionIngresada]);
         });
 
 const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
@@ -118,11 +115,11 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
     })
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack, gotoFlow }) => {
-            const optionAlojamiento = ctx.body;
+            const optionAlojamiento = parseInt(ctx.body);
 
             if (!validationOpciones(contAlojamientos, optionAlojamiento)) {
                 await delay(500);
-                return fallBack();
+                return fallBack([MSJ_OPCIONES['opcion-invalida']]);
             };
 
             idAlojamiento = parseInt(arrayAlojamientos[parseInt(optionAlojamiento) - 1].id);
@@ -162,4 +159,4 @@ const flowFechaDisponible = addKeyword(['flowFechaDisponible'])
         }, [flowAlojamientos]);
 
 
-module.exports = { flowFechaDisponible, flowVerFechaNoDisponible, flowVerFechaDisponible, flowMenuFechaDisponible };
+module.exports = { flowFechaDisponible, flowVerFechaNoDisponible, flowVerFechaDisponible };

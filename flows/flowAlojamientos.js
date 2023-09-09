@@ -21,7 +21,7 @@ const { validationCapacidad, validationOpciones } = require('../validatios/valid
  */
 
 const { flowReservar } = require("./flowReservar");
-const { flowFechaDisponible } = require("./flowFechaDisponible");
+// const { flowFechaDisponible } = require("./flowFechaDisponible");
 const { flowCerrarConversacion } = require("./flowCerrarConversacion");
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -74,30 +74,6 @@ const flowListarAlojamientos = addKeyword(['flowListarAlojamientos'])
 
         });
 
-const flowMenuAlojamientos = addKeyword(['flowMenuAlojamientos'])
-    .addAnswer('¿En que puedo ayudarte?, te muestro algunas opciones.')
-    .addAnswer([MENU['menu-principal']])
-    .addAnswer([MSJ_OPCIONES["elegir-opcion"]], { capture: true },
-        async (ctx, { gotoFlow, fallBack }) => {
-
-            const respuestaOpcion = parseInt(ctx.body);
-            if (!validationOpciones(4, respuestaOpcion)) {
-                await delay(500);
-                await fallBack();
-                return;
-            };
-
-            const opciones = {
-                1: flowReservar,
-                2: flowFechaDisponible,
-                3: flowListarAlojamientos,
-                4: flowCerrarConversacion,
-            };
-
-            await delay(500);
-            await gotoFlow(opciones[respuestaOpcion]);
-        });
-
 const flowFiltroAlojamientos = addKeyword(['flowFiltroAlojamientos'])
     .addAnswer('¡Perfecto! Para esa cantidad de personas, tenemos disponibles los siguientes alojamientos.')
     .addAction(async (ctx, { flowDynamic }) => {
@@ -116,24 +92,32 @@ const flowFiltroAlojamientos = addKeyword(['flowFiltroAlojamientos'])
 
 const flowVolverMenuPrincipal = addKeyword(['flowVolverMenuPrincipal'])
     .addAnswer(['¿Puedo ayudarte en algo más?'])
-    .addAnswer(['*1)* Ver otro alojamiento', '*2)* Volver al menú principal'])
+    .addAnswer(['*1)* Ver otros alojamientos'])
+    .addAnswer(['💡 Escribí *MENU* para volver al menú principal'])
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
 
-            const opcionIngresada = parseInt(ctx.body);
-            if (!validationOpciones(2, opcionIngresada)) {
+            const menuArray = ['MENU', 'menu', 'MENÚ', 'menú', 'Menú', 'Menu'];
+            const opcionIngresada = !menuArray.includes(ctx.body) ? parseInt(ctx.body) : ctx.body.toLowerCase();
+            console.log(opcionIngresada);
+
+            if (typeof opcionIngresada === 'number') {
+
+                if (!validationOpciones(1, opcionIngresada)) {
+                    await delay(500);
+                    await fallBack(MSJ_OPCIONES['opcion-invalida']);
+                    return;
+                };
+
+                const opciones = {
+                    1: flowListarAlojamientos,
+                };
+
                 await delay(500);
-                await fallBack(MSJ_OPCIONES['opcion-invalida']);
-                return;
+                await gotoFlow(opciones[opcionIngresada]);
+
             };
 
-            const opciones = {
-                1: flowListarAlojamientos,
-                2: flowMenuAlojamientos
-            };
-
-            await delay(500);
-            await gotoFlow(opciones[opcionIngresada]);
         });
 
-module.exports = { flowListarAlojamientos, flowVolverMenuPrincipal, flowFiltroAlojamientos, flowMenuAlojamientos };
+module.exports = { flowListarAlojamientos, flowVolverMenuPrincipal, flowFiltroAlojamientos };
