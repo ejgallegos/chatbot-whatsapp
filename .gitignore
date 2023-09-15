@@ -1,0 +1,14 @@
+#FOLDERS
+node_modules/
+bot_sessions/
+
+#ARCHIVOS
+core.class.log
+bot.qr.png
+
+
+#VARIABLES DE ENTORNO
+.env
+
+#LOGS
+queue.class.log
