@@ -53,7 +53,7 @@ const flowMenuPrincipal = addKeyword(['MENU', 'menu', 'MENÚ', 'menú', 'Menú',
         async (ctx, { gotoFlow, fallBack }) => {
             const respuestaOpcion = ctx.body.toLowerCase();
             if (!validationOpciones(4, respuestaOpcion)) {
-                await delay(500);
+                await delay(1000);
                 await fallBack();
                 return;
             };
@@ -65,20 +65,21 @@ const flowMenuPrincipal = addKeyword(['MENU', 'menu', 'MENÚ', 'menú', 'Menú',
                 4: flowCerrarConversacion,
             };
 
-            await delay(500);
+            await delay(1000);
             await gotoFlow(opciones[respuestaOpcion]);
         });
 
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
-    .addAnswer(['👋 ¡Hola! soy 🤖 Delta y seré tu asistente.'], null,
+    .addAnswer(['👋 ¡Hola! soy 🤖 Delta y seré tu asistente.'], { dalay: 1000 },
         async (ctx, { flowDynamic }) => {
             const nameTel = ctx.pushName;
+            await delay(1000);
             await flowDynamic(`Cuentame *${nameTel}*, ¿En que puedo ayudarte?, te muestro algunas opciones.`)
         })
-    .addAnswer([MENU["menu-principal"]])
+    .addAnswer([MENU["menu-principal"]], { dalay: 1000 })
     .addAnswer([MSJ_OPCIONES["elegir-opcion"]],
-        { capture: true },
+        { capture: true, delay: 1000 },
         async (ctx, { flowDynamic, gotoFlow, fallBack, endFlow }) => {
             const tel = ctx.from;
 
@@ -100,7 +101,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
 
                 const respuestaOpcion = ctx.body.toLowerCase();
                 if (!validationOpciones(4, respuestaOpcion)) {
-                    await delay(500);
+                    await delay(1000);
                     await fallBack(MSJ_OPCIONES['opcion-invalida']);
                     return;
                 };
@@ -112,11 +113,11 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
                     4: flowCerrarConversacion,
                 };
 
-                await delay(500);
+                await delay(1000);
                 await gotoFlow(opciones[respuestaOpcion]);
 
             } catch (error) {
-                await delay(500);
+                await delay(1000);
                 await flowDynamic(error.message);
                 await endFlow(MSJ_ERROR["error-intenta-nuevamente"]);
                 return;
