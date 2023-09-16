@@ -45,14 +45,14 @@ let contAlojamientos = 0;
  * FLUJOS
  */
 const flowListarAlojamientos = addKeyword(['flowListarAlojamientos'])
-    .addAnswer('¡Perfecto! Primero veamos el alojamiento que deseas. Decime, ¿Para cuantas personas necesitas?')
-    .addAnswer([MENU['menu-cant-personas']])
-    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
+    .addAnswer('¡Perfecto! Primero veamos el alojamiento que deseas. Decime, ¿Para cuantas personas necesitas?', { delay: 1000 })
+    .addAnswer([MENU['menu-cant-personas']], { delay: 1000 })
+    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
         async (ctx, { fallBack, gotoFlow }) => {
             const cantidadPersonas = ctx.body.toLowerCase();
 
             if (!validationCapacidad(cantidadPersonas)) {
-                await delay(500);
+                await delay(1000);
                 await fallBack();
                 return;
             };
@@ -64,10 +64,11 @@ const flowListarAlojamientos = addKeyword(['flowListarAlojamientos'])
 
                 cantPersonas = cantidadPersonas;
                 console.log({ cantPersonas });
+                await delay(1000);
                 await gotoFlow(flowFiltroAlojamientos);
 
             } catch (error) {
-                await delay(500);
+                await delay(1000);
                 await fallBack();
                 return;
             }
@@ -75,7 +76,7 @@ const flowListarAlojamientos = addKeyword(['flowListarAlojamientos'])
         });
 
 const flowFiltroAlojamientos = addKeyword(['flowFiltroAlojamientos'])
-    .addAnswer('¡Perfecto! Para esa cantidad de personas, tenemos disponibles los siguientes alojamientos.')
+    .addAnswer('¡Perfecto! Para esa cantidad de personas, tenemos disponibles los siguientes alojamientos.', { delay: 1000 })
     .addAction(async (ctx, { flowDynamic }) => {
         for (let dataAlojamientos of arrayAlojamientos) {
             await flowDynamic({ body: `*${contAlojamientos + 1})* ${dataAlojamientos.attributes.denominacion}`, media: `${dataAlojamientos.attributes.imagen}` });
@@ -83,18 +84,18 @@ const flowFiltroAlojamientos = addKeyword(['flowFiltroAlojamientos'])
             contAlojamientos += 1;
         };
     })
-    .addAnswer('Puedes encontrar más información ingresando al *link* que aparece en la descripción de cada alojamiento.', null,
+    .addAnswer('Puedes encontrar más información ingresando al *link* que aparece en la descripción de cada alojamiento.', { delay: 1000 },
         async (ctx, { flowDynamic, gotoFlow }) => {
             contAlojamientos = 0;
-            await delay(500);
+            await delay(1000);
             await gotoFlow(flowVolverMenuPrincipal);
         });
 
 const flowVolverMenuPrincipal = addKeyword(['flowVolverMenuPrincipal'])
-    .addAnswer(['¿Puedo ayudarte en algo más?'])
-    .addAnswer(['*1)* Ver otros alojamientos'])
-    .addAnswer(['💡 Escribí *MENU* para volver al menú principal'])
-    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
+    .addAnswer(['¿Puedo ayudarte en algo más?'], { delay: 1000 })
+    .addAnswer(['*1)* Ver otros alojamientos'], { delay: 1000 })
+    .addAnswer(['💡 Escribí *MENU* para volver al menú principal'], { delay: 1000 })
+    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
 
             const menuArray = ['MENU', 'menu', 'MENÚ', 'menú', 'Menú', 'Menu'];
@@ -104,7 +105,7 @@ const flowVolverMenuPrincipal = addKeyword(['flowVolverMenuPrincipal'])
             if (typeof opcionIngresada === 'number') {
 
                 if (!validationOpciones(1, opcionIngresada)) {
-                    await delay(500);
+                    await delay(1000);
                     await fallBack(MSJ_OPCIONES['opcion-invalida']);
                     return;
                 };
@@ -113,7 +114,7 @@ const flowVolverMenuPrincipal = addKeyword(['flowVolverMenuPrincipal'])
                     1: flowListarAlojamientos,
                 };
 
-                await delay(500);
+                await delay(1000);
                 await gotoFlow(opciones[opcionIngresada]);
 
             };

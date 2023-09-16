@@ -48,7 +48,7 @@ let contAlojamientos = 0;
  */
 
 const flowVerFechaDisponible = addKeyword(['flowVerFechaDisponible'])
-    .addAnswer(['Bien, ahora ingresá el número del mes que quieres saber la disponibilidad; ejemplo *08*'], { capture: true },
+    .addAnswer(['Bien, ahora ingresá el número del mes que quieres saber la disponibilidad; ejemplo *08*'], { capture: true, delay: 1000 },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
             const mesIngresado = ctx.body;
             let fechasMesDisponibles = '';
@@ -57,26 +57,29 @@ const flowVerFechaDisponible = addKeyword(['flowVerFechaDisponible'])
 
             if (nombreMes !== undefined && diasDelMes !== undefined) {
 
-                await delay(500);
+                await delay(1000);
                 await flowDynamic(`${nombreMes}`);
-                await delay(500);
+                await delay(1000);
                 await flowDynamic(`${diasDelMes}`);
+                await delay(1000);
                 await flowDynamic('📆 Los días reservados están marcados con una *[X]*');
 
             } else {
 
+                await delay(1000);
                 await flowDynamic('✅ El alojamiento que seleccionaste no registra reservas, por lo que tiene disponibilidad.');
 
             };
 
+            await delay(1000);
             await gotoFlow(flowVerFechaNoDisponible);
         });
 
 const flowVerFechaNoDisponible = addKeyword(['flowVerFechaNoDiponible'])
-    .addAnswer(['¿Puedo ayudarte en algo más?'])
-    .addAnswer(['*1)* Seleccionar otro alojamiento', '*2)* Ver otras fechas disponibles'])
-    .addAnswer(['💡 Escribí *MENU* para volver al menú principal'])
-    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
+    .addAnswer(['¿Puedo ayudarte en algo más?'], { delay: 1000 })
+    .addAnswer(['*1)* Seleccionar otro alojamiento', '*2)* Ver otras fechas disponibles'], { delay: 1000 })
+    .addAnswer(['💡 Escribí *MENU* para volver al menú principal'], { delay: 1000 })
+    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
         async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
 
             const menuArray = ['MENU', 'menu', 'MENÚ', 'menú', 'Menú', 'Menu'];
@@ -86,7 +89,7 @@ const flowVerFechaNoDisponible = addKeyword(['flowVerFechaNoDiponible'])
             if (typeof opcionIngresada === 'number') {
 
                 if (!validationOpciones(2, opcionIngresada)) {
-                    await delay(500);
+                    await delay(1000);
                     await fallBack(MSJ_OPCIONES['opcion-invalida']);
                     return;
                 };
@@ -96,7 +99,7 @@ const flowVerFechaNoDisponible = addKeyword(['flowVerFechaNoDiponible'])
                     2: flowVerFechaDisponible,
                 };
 
-                await delay(500);
+                await delay(1000);
                 await gotoFlow(opciones[opcionIngresada]);
             };
 
@@ -104,7 +107,7 @@ const flowVerFechaNoDisponible = addKeyword(['flowVerFechaNoDiponible'])
         });
 
 const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
-    .addAnswer('¡Perfecto! Para esa cantidad de personas, tenemos disponibles los siguientes alojamientos.')
+    .addAnswer('¡Perfecto! Para esa cantidad de personas, tenemos disponibles los siguientes alojamientos.', { delay: 1000 })
     .addAction(async (ctx, { flowDynamic }) => {
 
         for (let dataAlojamientos of arrayAlojamientos) {
@@ -113,12 +116,12 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             contAlojamientos += 1;
         };
     })
-    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
+    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
         async (ctx, { fallBack, gotoFlow }) => {
             const optionAlojamiento = parseInt(ctx.body);
 
             if (!validationOpciones(contAlojamientos, optionAlojamiento)) {
-                await delay(500);
+                await delay(1000);
                 return fallBack([MSJ_OPCIONES['opcion-invalida']]);
             };
 
@@ -126,18 +129,19 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             denominacionAlojamiento = arrayAlojamientos[parseInt(optionAlojamiento) - 1].attributes.denominacion;
             contAlojamientos = 0;
             console.log({ idAlojamiento });
-            gotoFlow(flowVerFechaDisponible);
+            await delay(1000);
+            await gotoFlow(flowVerFechaDisponible);
         });
 
 const flowFechaDisponible = addKeyword(['flowFechaDisponible'])
-    .addAnswer('¡Perfecto! Primero veamos el alojamiento que deseas. Decime, ¿Para cuantas personas necesitas?')
-    .addAnswer([MENU['menu-cant-personas']])
-    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true },
+    .addAnswer('¡Perfecto! Primero veamos el alojamiento que deseas. Decime, ¿Para cuantas personas necesitas?', { delay: 1000 })
+    .addAnswer([MENU['menu-cant-personas']], { delay: 1000 })
+    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
         async (ctx, { fallBack }) => {
             const cantidadPersonas = ctx.body.toLowerCase();
 
             if (!validationCapacidad(cantidadPersonas)) {
-                await delay(500);
+                await delay(1000);
                 await fallBack();
                 return;
             };
@@ -151,7 +155,7 @@ const flowFechaDisponible = addKeyword(['flowFechaDisponible'])
                 console.log({ cantPersonas });
 
             } catch (error) {
-                await delay(500);
+                await delay(1000);
                 await fallBack();
                 return;
             }
