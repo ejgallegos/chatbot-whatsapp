@@ -47,9 +47,9 @@ const {
 } = require("./flows/flowAlojamientos");
 
 const flowMenuPrincipal = addKeyword(['MENU', 'menu', 'MENÚ', 'menú', 'Menú', 'Menu'])
-    .addAnswer('¿En que puedo ayudarte?, te muestro las principales opciones.')
-    .addAnswer([MENU['menu-principal']])
-    .addAnswer([MSJ_OPCIONES["elegir-opcion"]], { capture: true },
+    .addAnswer('¿En que puedo ayudarte?, te muestro las principales opciones.', { delay: 1000 })
+    .addAnswer([MENU['menu-principal']], { delay: 1000 })
+    .addAnswer([MSJ_OPCIONES["elegir-opcion"]], { capture: true, delay: 1000 },
         async (ctx, { gotoFlow, fallBack }) => {
             const respuestaOpcion = ctx.body.toLowerCase();
             if (!validationOpciones(4, respuestaOpcion)) {
