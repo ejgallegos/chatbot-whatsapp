@@ -24,7 +24,7 @@ const verificaFechasDisponibles = async (mes, idAlojamiento) => {
         return mesFechasDisponibles;
     } catch (error) {
         handleHttpError(error);
-    };
+    }
 
 };
 
@@ -43,7 +43,7 @@ const verificaFechaReserva = async (fechaDesde, fechaFinal, idAlojamiento) => {
         return response.data.data;
     } catch (error) {
         handleHttpError(error);
-    };
+    }
 
 };
 const registrarReserva = async (fechaReserva, idAlojamiento, fechaInicio, fechaFinal, idCliente, telefono) => {
@@ -88,7 +88,7 @@ const obtenerDiasOcupadosPorMes = (datos, mes, idAlojamiento) => {
     }
 
     const fechaDesde = new Date(reserva.attributes.fechaDesde);
-    const fechaHasta = new Date(reserva.attributes.fechaHasta);
+    //const fechaHasta = new Date(reserva.attributes.fechaHasta);
 
     const año = fechaDesde.getFullYear();
 

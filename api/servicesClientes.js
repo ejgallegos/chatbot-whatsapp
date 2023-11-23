@@ -19,7 +19,7 @@ const getListClientes = async () => {
         return response.data.data;
     } catch (error) {
         handleHttpError(error);
-    };
+    }
 
 };
 
@@ -36,7 +36,7 @@ const getCliente = async (telefono) => {
         return response.data.data;
     } catch (error) {
         handleHttpError(error);
-    };
+    }
 
 };
 

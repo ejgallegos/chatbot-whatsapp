@@ -1,4 +1,4 @@
-const { addKeyword, addChild } = require('@bot-whatsapp/bot');
+const { addKeyword } = require('@bot-whatsapp/bot');
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 const flowCerrarConversacion = addKeyword([['chau', 'cierrechat']])

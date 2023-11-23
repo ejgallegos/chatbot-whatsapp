@@ -1,4 +1,4 @@
-const { addKeyword, addChild } = require('@bot-whatsapp/bot');
+const { addKeyword } = require('@bot-whatsapp/bot');
 
 const moment = require("moment");
 moment.locale('es');
@@ -26,7 +26,7 @@ const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 /**
  * REGEX
 */
-const regexFecha = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])$/;
+//const regexFecha = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])$/;
 const regexCantNoches = /^[1-9]$/;
 const regexCantPersonas = /^[1-6]$/;
 
@@ -69,7 +69,7 @@ const flowInfoReserva = addKeyword('')
                 await delay(1000);
                 await fallBack(MSJ_OPCIONES['opcion-invalida']);
                 return;
-            };
+            }
 
             try {
 
@@ -80,7 +80,7 @@ const flowInfoReserva = addKeyword('')
                     await delay(1000);
                     await endFlow(MSJ_CONFIRMACION['confirmacion-ok'])
                     return;
-                };
+                }
                 await endFlow(MSJ_CIERRE_FLUJO['cierre-despedida']);
                 return;
 
@@ -107,11 +107,11 @@ const flowNombreApellido = addKeyword([regexCantNoches], { regex: true })
 
                 if (cliente.length === 0) {
                     await registerCliente(tel);
-                };
+                }
 
                 if (cliente.length > 0) {
                     await updateCliente(idCliente, tel, nomApe)
-                };
+                }
 
 
                 nombreApellido = nomApe;
@@ -129,7 +129,7 @@ const flowNombreApellido = addKeyword([regexCantNoches], { regex: true })
 
 const flowMesFechasDisponibles = addKeyword(['flowMesFechasDisponibles'])
     .addAnswer(['Bien, ahora ingresá el número del mes que quieres saber la disponibilidad; ejemplo *08*'], { capture: true, delay: 1000 },
-        async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
+        async (ctx, { gotoFlow, flowDynamic }) => {
             const mesIngresado = ctx.body;
             let fechasMesDisponibles = '';
             fechasMesDisponibles = await verificaFechasDisponibles(mesIngresado, idAlojamiento);
@@ -145,14 +145,14 @@ const flowMesFechasDisponibles = addKeyword(['flowMesFechasDisponibles'])
 const flowFechaNoDisponible = addKeyword(['flowFechaNoDisponible'])
     .addAnswer(['*1)* Ingresar nueva fecha', '*2)* Seleccionar otro alojamiento', '*3)* Ver fecha disponible'], { delay: 1000 })
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
-        async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
+        async (ctx, { fallBack, gotoFlow }) => {
             const opcionIngresada = parseInt(ctx.body);
 
             if (!validationOpciones(3, opcionIngresada)) {
                 await delay(1000);
                 await fallBack(MSJ_OPCIONES['opcion-invalida']);
                 return;
-            };
+            }
 
             const opciones = {
                 1: flowFechaInicioReserva,
@@ -174,7 +174,7 @@ const flowFechaFinalReserva = addKeyword(['flowFechaFinalReserva'])
                 await delay(1000);
                 await fallBack(MSJ_OPCIONES['opcion-cantidad-noches']);
                 return;
-            };
+            }
 
             fechaFinal = moment(fechaInicio).add(cantDias, 'days').format('YYYY-MM-DD');
 
@@ -187,14 +187,14 @@ const flowFechaFinalReserva = addKeyword(['flowFechaFinalReserva'])
                 await flowDynamic(MSJ_FECHAS['fecha-no-disponible']);
                 await delay(1000);
                 await gotoFlow(flowFechaNoDisponible);
-            };
+            }
 
         }, [flowNombreApellido]);
 
 const flowFechaInicioReserva = addKeyword(['flowFechaInicioReserva'])
     .addAnswer(['¡Perfecto! Continuemos, decime la fecha de *ingreso*.'], { delay: 1000 })
     .addAnswer(['Sólo necesito el día y el mes *DD-MM*.', 'Por favor hazlo con éste formato; ejemplo *31-12*'], { capture: true, delay: 1000 },
-        async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
+        async (ctx, { fallBack, gotoFlow }) => {
             const fInicio = ctx.body;
             const dia = fInicio.substring(0, 2);
             const mes = fInicio.substring(3, 5);
@@ -204,19 +204,19 @@ const flowFechaInicioReserva = addKeyword(['flowFechaInicioReserva'])
                 await delay(1000);
                 await fallBack(MSJ_FECHAS['fecha-incorrecta']);
                 return;
-            };
+            }
 
             if (validationFechaMenor(fechaInicio)) {
                 await delay(1000);
                 await fallBack(MSJ_FECHAS['fecha-posterior']);
                 return;
-            };
+            }
 
             if (!validationFechaReserva(fInicio)) {
                 await delay(1000);
                 await fallBack(MSJ_FECHAS['fecha-formato-incorrecto']);
                 return;
-            };
+            }
 
             await delay(1000);
             gotoFlow(flowFechaFinalReserva);
@@ -230,7 +230,7 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             await flowDynamic({ body: `*${contAlojamientos + 1})* ${dataAlojamientos.attributes.denominacion}`, media: `${dataAlojamientos.attributes.imagen}` });
             await flowDynamic({ body: `${dataAlojamientos.attributes.descripcion}` });
             contAlojamientos += 1;
-        };
+        }
     })
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
         async (ctx, { fallBack, gotoFlow }) => {
@@ -239,7 +239,7 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             if (!validationOpciones(contAlojamientos, optionAlojamiento)) {
                 await delay(1000);
                 return fallBack();
-            };
+            }
 
             idAlojamiento = parseInt(arrayAlojamientos[parseInt(optionAlojamiento) - 1].id);
             denominacionAlojamiento = arrayAlojamientos[parseInt(optionAlojamiento) - 1].attributes.denominacion;
@@ -260,7 +260,7 @@ const flowReservar = addKeyword(['flowReservar'])
                 await delay(1000);
                 await fallBack();
                 return;
-            };
+            }
 
             try {
 

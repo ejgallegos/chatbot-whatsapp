@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { createBot, createProvider, createFlow, addKeyword, addChild, EVENTS } = require('@bot-whatsapp/bot');
+const { createBot, createProvider, createFlow, addKeyword, EVENTS } = require('@bot-whatsapp/bot');
 
 const QRPortalWeb = require('@bot-whatsapp/portal');
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
@@ -56,7 +56,7 @@ const flowMenuPrincipal = addKeyword(['MENU', 'menu', 'MENÚ', 'menú', 'Menú',
                 await delay(1000);
                 await fallBack();
                 return;
-            };
+            }
 
             const opciones = {
                 1: flowReservar,
@@ -91,12 +91,12 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
 
                     if (cliente.length === 0) {
                         await registerCliente(tel);
-                    };
-                };
+                    }
+                }
 
                 if (listClientes.length === 0) {
                     await registerCliente(tel);
-                };
+                }
 
 
                 const respuestaOpcion = ctx.body.toLowerCase();
@@ -104,7 +104,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
                     await delay(1000);
                     await fallBack(MSJ_OPCIONES['opcion-invalida']);
                     return;
-                };
+                }
 
                 const opciones = {
                     1: flowReservar,
@@ -121,7 +121,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
                 await flowDynamic(error.message);
                 await endFlow(MSJ_ERROR["error-intenta-nuevamente"]);
                 return;
-            };
+            }
 
         }
     );
@@ -153,7 +153,7 @@ const main = async () => {
         database: adapterDB,
     })
 
-    QRPortalWeb()
+    QRPortalWeb({ port: 3001 })
 }
 
 main()

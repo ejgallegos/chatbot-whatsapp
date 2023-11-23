@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require('axios');
 const ENVIRONMENT_STRAPI = process.env.ENVIRONMENT === 'develop' ? process.env.URL_DEVELOPMENT_STRAPI : process.env.URL_PRODUCTION_STRAPI;
 
 
@@ -28,12 +28,12 @@ const getAlojamientos = async (capacidad) => {
             },
         };
         const response = await axios(config);
-        // console.log(response.data.data);
+        //console.log(response.data.data);
         return response.data.data;
     } catch (error) {
         console.log(error);
         throw error;
-    };
+    }
 
 };
 

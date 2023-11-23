@@ -3,11 +3,11 @@ const validationMenu = (opcion) => {
     if (opcion.length > 1) {
         console.log('opcion.length ' + opcion.length);
         return false;
-    };
+    }
     if (!menuOpciones.includes(opcion.toLowerCase())) {
         console.log('opcion ' + opcion);
         return false;
-    };
+    }
     return true;
 };
 

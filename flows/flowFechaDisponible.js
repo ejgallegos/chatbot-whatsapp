@@ -1,4 +1,4 @@
-const { addKeyword, addChild } = require('@bot-whatsapp/bot');
+const { addKeyword } = require('@bot-whatsapp/bot');
 
 const moment = require("moment");
 moment.locale('es');
@@ -18,9 +18,9 @@ const { MENU } = require('./../helpers/constantsMenu');
 /**
  * Otros Flujos
  */
-const { flowReservar } = require("./flowReservar");
-const { flowListarAlojamientos } = require("./flowAlojamientos");
-const { flowCerrarConversacion } = require("./flowCerrarConversacion");
+//const { flowReservar } = require("./flowReservar");
+//const { flowListarAlojamientos } = require("./flowAlojamientos");
+//const { flowCerrarConversacion } = require("./flowCerrarConversacion");
 
 /**
  * Validaciones
@@ -49,7 +49,7 @@ let contAlojamientos = 0;
 
 const flowVerFechaDisponible = addKeyword(['flowVerFechaDisponible'])
     .addAnswer(['Bien, ahora ingresá el número del mes que quieres saber la disponibilidad; ejemplo *08*'], { capture: true, delay: 1000 },
-        async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
+        async (ctx, { gotoFlow, flowDynamic }) => {
             const mesIngresado = ctx.body;
             let fechasMesDisponibles = '';
             fechasMesDisponibles = await verificaFechasDisponibles(mesIngresado, idAlojamiento);
@@ -69,7 +69,7 @@ const flowVerFechaDisponible = addKeyword(['flowVerFechaDisponible'])
                 await delay(1000);
                 await flowDynamic('✅ El alojamiento que seleccionaste no registra reservas, por lo que tiene disponibilidad.');
 
-            };
+            }
 
             await delay(1000);
             await gotoFlow(flowVerFechaNoDisponible);
@@ -80,7 +80,7 @@ const flowVerFechaNoDisponible = addKeyword(['flowVerFechaNoDiponible'])
     .addAnswer(['*1)* Seleccionar otro alojamiento', '*2)* Ver otras fechas disponibles'], { delay: 1000 })
     .addAnswer(['💡 Escribí *MENU* para volver al menú principal'], { delay: 1000 })
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
-        async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
+        async (ctx, { fallBack, gotoFlow }) => {
 
             const menuArray = ['MENU', 'menu', 'MENÚ', 'menú', 'Menú', 'Menu'];
             const opcionIngresada = !menuArray.includes(ctx.body) ? parseInt(ctx.body) : ctx.body.toLowerCase();
@@ -92,16 +92,16 @@ const flowVerFechaNoDisponible = addKeyword(['flowVerFechaNoDiponible'])
                     await delay(1000);
                     await fallBack(MSJ_OPCIONES['opcion-invalida']);
                     return;
-                };
+                }
 
                 const opciones = {
                     1: flowFechaDisponible,
                     2: flowVerFechaDisponible,
-                };
+                }
 
                 await delay(1000);
                 await gotoFlow(opciones[opcionIngresada]);
-            };
+            }
 
 
         });
@@ -114,7 +114,7 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             await flowDynamic({ body: `*${contAlojamientos + 1})* ${dataAlojamientos.attributes.denominacion}`, media: `${dataAlojamientos.attributes.imagen}` });
             await flowDynamic({ body: `${dataAlojamientos.attributes.descripcion}` });
             contAlojamientos += 1;
-        };
+        }
     })
     .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
         async (ctx, { fallBack, gotoFlow }) => {
@@ -123,10 +123,10 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
             if (!validationOpciones(contAlojamientos, optionAlojamiento)) {
                 await delay(1000);
                 return fallBack([MSJ_OPCIONES['opcion-invalida']]);
-            };
+            }
 
             idAlojamiento = parseInt(arrayAlojamientos[parseInt(optionAlojamiento) - 1].id);
-            denominacionAlojamiento = arrayAlojamientos[parseInt(optionAlojamiento) - 1].attributes.denominacion;
+            //denominacionAlojamiento = arrayAlojamientos[parseInt(optionAlojamiento) - 1].attributes.denominacion;
             contAlojamientos = 0;
             console.log({ idAlojamiento });
             await delay(1000);
@@ -144,7 +144,7 @@ const flowFechaDisponible = addKeyword(['flowFechaDisponible'])
                 await delay(1000);
                 await fallBack();
                 return;
-            };
+            }
 
             try {
 

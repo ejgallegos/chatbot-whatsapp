@@ -16,26 +16,18 @@ const { MENU } = require('./../helpers/constantsMenu');
 */
 const { validationCapacidad, validationOpciones } = require('../validatios/validationMenu');
 
-/**
- * Otros Flujos
- */
-
-const { flowReservar } = require("./flowReservar");
-// const { flowFechaDisponible } = require("./flowFechaDisponible");
-const { flowCerrarConversacion } = require("./flowCerrarConversacion");
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 /**
  * REGEX
 */
-const regexCantPersonas = /^[1-6]$/;
-
+//const regexCantPersonas = /^[1-6]$/;
 
 /**
  * Variables
  */
-let idAlojamiento;
+//let idAlojamiento;
 let cantPersonas;
 let arrayAlojamientos;
 let contAlojamientos = 0;
@@ -55,7 +47,7 @@ const flowListarAlojamientos = addKeyword(['flowListarAlojamientos'])
                 await delay(1000);
                 await fallBack();
                 return;
-            };
+            }
 
             try {
 
@@ -65,7 +57,7 @@ const flowListarAlojamientos = addKeyword(['flowListarAlojamientos'])
                 cantPersonas = cantidadPersonas;
                 console.log({ cantPersonas });
                 await delay(1000);
-                await gotoFlow(flowFiltroAlojamientos);
+                return gotoFlow(flowFiltroAlojamientos);
 
             } catch (error) {
                 await delay(1000);
@@ -76,27 +68,34 @@ const flowListarAlojamientos = addKeyword(['flowListarAlojamientos'])
         });
 
 const flowFiltroAlojamientos = addKeyword(['flowFiltroAlojamientos'])
-    .addAnswer('¡Perfecto! Para esa cantidad de personas, tenemos disponibles los siguientes alojamientos.', { delay: 1000 })
-    .addAction(async (ctx, { flowDynamic }) => {
-        for (let dataAlojamientos of arrayAlojamientos) {
-            await flowDynamic({ body: `*${contAlojamientos + 1})* ${dataAlojamientos.attributes.denominacion}`, media: `${dataAlojamientos.attributes.imagen}` });
-            await flowDynamic({ body: `${dataAlojamientos.attributes.descripcion}` });
-            contAlojamientos += 1;
-        };
-    })
-    .addAnswer('Puedes encontrar más información ingresando al *link* que aparece en la descripción de cada alojamiento.', { delay: 1000 },
-        async (ctx, { flowDynamic, gotoFlow }) => {
-            contAlojamientos = 0;
-            await delay(1000);
-            await gotoFlow(flowVolverMenuPrincipal);
+    .addAnswer('¡Perfecto! Para esa cantidad de personas, tenemos disponibles los siguientes alojamientos.', { delay: 1000 },
+        async (_, { flowDynamic, gotoFlow, fallBack }) => {
+            try {
+
+                for (let dataAlojamientos of arrayAlojamientos) {
+                    await flowDynamic([{ body: `*${contAlojamientos + 1})* ${dataAlojamientos.attributes.denominacion}`, media: `${dataAlojamientos.attributes.imagen}` }]);
+                    await flowDynamic([{ body: `${dataAlojamientos.attributes.descripcion}` }]);
+                    contAlojamientos += 1;
+                }
+
+                await flowDynamic('Puedes encontrar más información ingresando al *link* que aparece en la descripción de cada alojamiento.');
+                contAlojamientos = 0;
+                await delay(1000);
+                return gotoFlow(flowVolverMenuPrincipal);
+
+            } catch (error) {
+                await delay(1000);
+                await fallBack();
+                return;
+            }
+
         });
 
 const flowVolverMenuPrincipal = addKeyword(['flowVolverMenuPrincipal'])
-    .addAnswer(['¿Puedo ayudarte en algo más?'], { delay: 1000 })
-    .addAnswer(['*1)* Ver otros alojamientos'], { delay: 1000 })
-    .addAnswer(['💡 Escribí *MENU* para volver al menú principal'], { delay: 1000 })
-    .addAnswer([MSJ_OPCIONES['elegir-opcion']], { capture: true, delay: 1000 },
-        async (ctx, { fallBack, gotoFlow, flowDynamic }) => {
+    .addAnswer('¿Puedo ayudarte en algo más?')
+    .addAnswer('*1)* Ver otros alojamientos')
+    .addAnswer('💡 Escribí *MENU* para volver al menú principal', { capture: true, delay: 1000 },
+        async (ctx, { fallBack, gotoFlow }) => {
 
             const menuArray = ['MENU', 'menu', 'MENÚ', 'menú', 'Menú', 'Menu'];
             const opcionIngresada = !menuArray.includes(ctx.body) ? parseInt(ctx.body) : ctx.body.toLowerCase();
@@ -108,7 +107,7 @@ const flowVolverMenuPrincipal = addKeyword(['flowVolverMenuPrincipal'])
                     await delay(1000);
                     await fallBack(MSJ_OPCIONES['opcion-invalida']);
                     return;
-                };
+                }
 
                 const opciones = {
                     1: flowListarAlojamientos,
@@ -117,8 +116,8 @@ const flowVolverMenuPrincipal = addKeyword(['flowVolverMenuPrincipal'])
                 await delay(1000);
                 await gotoFlow(opciones[opcionIngresada]);
 
-            };
+            }
 
         });
 
-module.exports = { flowListarAlojamientos, flowVolverMenuPrincipal, flowFiltroAlojamientos };
+module.exports = { flowListarAlojamientos, flowFiltroAlojamientos, flowVolverMenuPrincipal };
