@@ -227,8 +227,8 @@ const flowAlojamientos = addKeyword([regexCantPersonas], { regex: true })
     .addAction(async (ctx, { flowDynamic }) => {
 
         for (let dataAlojamientos of arrayAlojamientos) {
-            await flowDynamic({ body: `*${contAlojamientos + 1})* ${dataAlojamientos.attributes.denominacion}`, media: `${dataAlojamientos.attributes.imagen}` });
-            await flowDynamic({ body: `${dataAlojamientos.attributes.descripcion}` });
+            await flowDynamic([{ body: `*${contAlojamientos + 1})* ${dataAlojamientos.attributes.denominacion}`, media: `${dataAlojamientos.attributes.imagen}` }]);
+            await flowDynamic([{ body: `${dataAlojamientos.attributes.descripcion}` }]);
             contAlojamientos += 1;
         }
     })
