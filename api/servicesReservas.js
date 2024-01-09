@@ -87,10 +87,11 @@ const obtenerDiasOcupadosPorMes = (datos, mes, idAlojamiento) => {
         return [];
     }
 
-    const fechaDesde = new Date(reserva.attributes.fechaDesde);
+    const fecha = new Date();
     //const fechaHasta = new Date(reserva.attributes.fechaHasta);
 
-    const año = fechaDesde.getFullYear();
+    const año = fecha.getFullYear();
+    console.log({ año });
 
     const primerDiaDelMes = new Date(año, mes - 1, 1);
     const ultimoDiaDelMes = new Date(año, mes, 0);
