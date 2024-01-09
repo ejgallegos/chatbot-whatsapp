@@ -1,11 +1,15 @@
-FROM node:18-bullseye as bot
+FROM node:18-bullseye-slim as bot
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm i
+
 COPY . .
+
 ARG ENVIRONMENT
 ARG URL_DEVELOPMENT_STRAPI
 ARG URL_PRODUCTION_STRAPI
 ARG TOKEN_API_STRAPI
 ARG PORT
+
 CMD ["npm", "start"]
