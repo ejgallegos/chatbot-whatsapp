@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "app.js",
 	"scripts": {
-		"start": "npx eslint . --no-ignore && node app.js"
+		"start": "node app.js",
+		"develop": "npx eslint . --no-ignore && node app.js"
 	},
 	"keywords": [],
 	"dependencies": {
