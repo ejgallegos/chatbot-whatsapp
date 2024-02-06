@@ -25,6 +25,8 @@ const { getListClientes, getCliente, registerCliente } = require('./api/services
 /**Flows
  * 
  */
+const menuFlows = require('./flows/flowMenu');
+
 const {
     flowReservar,
     flowFechaInicioReserva,
@@ -32,9 +34,12 @@ const {
     flowFechaNoDisponible,
     flowMesFechasDisponibles
 } = require("./flows/flowReservar");
-const {
-    flowCerrarConversacion
-} = require("./flows/flowCerrarConversacion");
+
+const flowCerrarConversacion = require("./flows/flowCerrarConversacion");
+
+const derivarAgente = require("./flows/agentes/derivarAgente.flow");
+const cerrarChatAgente = require("./flows/agentes/cerrarChatAgente.flow");
+
 const {
     flowFechaDisponible,
     flowVerFechaDisponible,
@@ -52,7 +57,7 @@ const flowMenuPrincipal = addKeyword(['MENU', 'menu', 'MENÚ', 'menú', 'Menú',
     .addAnswer([MSJ_OPCIONES["elegir-opcion"]], { capture: true, delay: 1000 },
         async (ctx, { gotoFlow, fallBack }) => {
             const respuestaOpcion = ctx.body.toLowerCase();
-            if (!validationOpciones(4, respuestaOpcion)) {
+            if (!validationOpciones(5, respuestaOpcion)) {
                 await delay(1000);
                 await fallBack();
                 return;
@@ -62,7 +67,8 @@ const flowMenuPrincipal = addKeyword(['MENU', 'menu', 'MENÚ', 'menú', 'Menú',
                 1: flowReservar,
                 2: flowFechaDisponible,
                 3: flowListarAlojamientos,
-                4: flowCerrarConversacion,
+                4: derivarAgente,
+                5: flowCerrarConversacion,
             };
 
             await delay(1000);
@@ -71,6 +77,27 @@ const flowMenuPrincipal = addKeyword(['MENU', 'menu', 'MENÚ', 'menú', 'Menú',
 
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
+    .addAction(async(ctx, { endFlow, state }) => {
+        
+        const listClientes = await getListClientes();
+        console.log(listClientes[0]?.attributes?.derivado);
+        const derivadoAgente = listClientes[0]?.attributes?.derivado;
+        const idCliente = listClientes[0]?.id;
+        await state.update({ id: idCliente });
+
+        const botState = state.getMyState();
+        const agenteOn = botState?.agente;
+        if (agenteOn === 'On' && derivadoAgente) {
+            console.log("El cliente SI! esta derivado a Agente");
+            return endFlow();
+        }
+
+    })
+    .addAction(async (ctx, { state }) => {
+          await state.update({ agente: 'Off' });
+          console.log("El cliente NO! esta derivado a Agente");
+        }
+    )
     .addAnswer(['👋 ¡Hola! soy 🤖 Delta y seré tu asistente.'], { dalay: 1000 },
         async (ctx, { flowDynamic }) => {
             const nameTel = ctx.pushName;
@@ -99,8 +126,8 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
                 }
 
 
-                const respuestaOpcion = ctx.body.toLowerCase();
-                if (!validationOpciones(4, respuestaOpcion)) {
+                const respuestaOpcion = ctx.body;
+                if (!validationOpciones(5, respuestaOpcion)) {
                     await delay(1000);
                     await fallBack(MSJ_OPCIONES['opcion-invalida']);
                     return;
@@ -110,7 +137,8 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
                     1: flowReservar,
                     2: flowFechaDisponible,
                     3: flowListarAlojamientos,
-                    4: flowCerrarConversacion,
+                    4: derivarAgente,
+                    5: flowCerrarConversacion,
                 };
 
                 await delay(1000);
@@ -130,6 +158,7 @@ const main = async () => {
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow(
         [
+            menuFlows,
             flowPrincipal,
             flowMenuPrincipal,
             flowReservar,
@@ -144,6 +173,8 @@ const main = async () => {
             flowListarAlojamientos,
             flowVolverMenuPrincipal,
             flowFiltroAlojamientos,
+            derivarAgente,
+            cerrarChatAgente
         ])
     const adapterProvider = createProvider(BaileysProvider)
 
@@ -151,6 +182,11 @@ const main = async () => {
         flow: adapterFlow,
         provider: adapterProvider,
         database: adapterDB,
+    },
+    {
+        globalState: {
+          version: 1.0,
+        }
     })
 
     QRPortalWeb({ port: 3001 })

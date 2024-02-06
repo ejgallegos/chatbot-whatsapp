@@ -1,45 +1,46 @@
 const { addKeyword } = require('@bot-whatsapp/bot');
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-console.log('menu');
-
-//const { MENU } = require('./../helpers/constantsMenu');
-//const { MSJ_OPCIONES } = require('./../helpers/constantsResponse');
-
-// const { flowReservar } = require('./flowReservar');
-// const { flowFechaDisponible } = require('./flowFechaDisponible');
-// const { flowListarAlojamientos } = require('./flowAlojamientos');
-// const { flowCerrarConversacion } = require('./flowCerrarConversacion');
+/**
+ * Respuestas constantes
+ */
+const { MSJ_OPCIONES } = require('../helpers/constantsResponse');
+const { MENU } = require('../helpers/constantsMenu');
 
 /**
  * Validaciones
  */
 const { validationOpciones } = require('../validatios/validationMenu');
 
+/**Flows
+ * 
+ */
+const { flowReservar } = require("./flowReservar");
+const flowCerrarConversacion = require("./flowCerrarConversacion");
+const derivarAgente = require("./agentes/derivarAgente.flow");
+const { flowFechaDisponible } = require("./flowFechaDisponible");
+const { flowListarAlojamientos } = require("./flowAlojamientos");
 
-const flowMenu = addKeyword('flowMenu')
-    .addAnswer('¿En que puedo ayudarte?, te muestro algunas opciones.',
-        { capture: true },
+module.exports = addKeyword('###flowMenu###')
+    .addAnswer('¿En que puedo ayudarte?, te muestro las principales opciones.', { delay: 1000 })
+    .addAnswer([MENU['menu-principal']], { delay: 1000 })
+    .addAnswer([MSJ_OPCIONES["elegir-opcion"]], { capture: true, delay: 1000 },
         async (ctx, { gotoFlow, fallBack }) => {
             const respuestaOpcion = ctx.body.toLowerCase();
-            if (!validationOpciones(4, respuestaOpcion)) {
-                await delay(500);
+            if (!validationOpciones(5, respuestaOpcion)) {
+                await delay(1000);
                 await fallBack();
                 return;
             }
 
-            //const flowReservar = require('./flowReservar')
-
             const opciones = {
-                1: 'flowReservar',
-                // 2: flowFechaDisponible,
-                // 3: flowListarAlojamientos,
-                // 4: flowCerrarConversacion,
+                1: flowReservar,
+                2: flowFechaDisponible,
+                3: flowListarAlojamientos,
+                4: derivarAgente,
+                5: flowCerrarConversacion,
             };
 
-            await delay(500);
-            console.log(opciones[respuestaOpcion]);
+            await delay(1000);
             await gotoFlow(opciones[respuestaOpcion]);
         });
-
-module.exports = { flowMenu };

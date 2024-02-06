@@ -94,4 +94,25 @@ const updateCliente = async (id, telefono, nombreApellido = '', email = 'email@e
 
 };
 
-module.exports = { getListClientes, getCliente, registerCliente, updateCliente };
+const derivarClienteAgente = async (id, derivado) => {
+
+    const url = `${ENVIRONMENT_STRAPI}/clientes/${id}`;
+    const headers = {
+        Authorization: `Bearer ${process.env.TOKEN_API_STRAPI}`,
+    };
+    const data = {
+        data: {
+            derivado: derivado,
+        },
+    };
+
+    await axios.put(url, data, { headers: headers })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            handleHttpError(error);
+        });
+};
+
+module.exports = { getListClientes, getCliente, registerCliente, updateCliente, derivarClienteAgente };
